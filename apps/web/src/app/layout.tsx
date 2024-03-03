@@ -28,7 +28,9 @@ export default function RootLayout({
         <link rel="icon" type="image/png" href="logo\logo.png" />
       </head>
       <body className={inter.className}>
-          <ChakraProvider>{children}</ChakraProvider>
+        <ChakraProvider>
+          {children}
+        </ChakraProvider>
       </body>
     </html>
   );

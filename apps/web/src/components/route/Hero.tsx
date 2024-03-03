@@ -10,8 +10,8 @@ import {
 
 const Hero = () => {
   return (
-    <div>
-      <Carousel>
+    <div className="w-full h-[200px] flex relative border mb-5 mt-10">
+      <Carousel className="w-full">
         <CarouselContent>
           <CarouselItem>1</CarouselItem>
           <CarouselItem>2</CarouselItem>
