@@ -6,11 +6,11 @@ import Logo from '/public/logo.png';
 import Image from 'next/image';
 import axios from 'axios';
 import { useRouter, usePathname } from 'next/navigation';
-import { getSessionClient } from '@/services/client';
+// import { getSessionClient } from '@/services/client';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { Separator } from '../ui/separator';
-import { Megaphone, PlusSquare, User } from 'lucide-react';
+import { Megaphone, PlusSquare, ShoppingCart, User } from 'lucide-react';
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -32,32 +32,32 @@ interface HeaderProps {
   sessionCookie?: string;
 }
 
-export default function Header(props: HeaderProps) {
-  const { sessionCookie } = props;
-  const router = useRouter();
-  const pathname = usePathname();
-  const hiddenHeader = ['/auth/signin', '/auth/signup'];
-  const hideCreateButton = ['/create-event', '/event/[id]', '/event/[id]/edit'];
+export default function Header() {
+  // export default function Header(props: HeaderProps) {
+  // const { sessionCookie } = props;
+  // const router = useRouter();
+  // const pathname = usePathname();
+  // const hiddenHeader = ['/auth/signin', '/auth/signup'];
+  // const hideCreateButton = ['/create-event', '/event/[id]', '/event/[id]/edit'];
+  // const [sessionData, setSessionData] = useState<any>({});
 
-  const [sessionData, setSessionData] = useState<any>({});
+  // useEffect(() => {
+  //   getSessionClient(sessionCookie).then((data) => {
+  //     if (data) setSessionData(data);
+  //   });
+  // }, [sessionCookie]);
 
-  useEffect(() => {
-    getSessionClient(sessionCookie).then((data) => {
-      if (data) setSessionData(data);
-    });
-  }, [sessionCookie]);
+  // const handleLogout = async () => {
+  //   await axios.post('http://localhost:8000/api/auth/signout', {
+  //     withCredentials: true,
+  //   });
+  //   router.push('/');
+  //   router.refresh();
+  // };
 
-  const handleLogout = async () => {
-    await axios.post('http://localhost:8000/api/auth/signout', {
-      withCredentials: true,
-    });
-    router.push('/');
-    router.refresh();
-  };
-
-  if (hiddenHeader.includes(pathname)) return null;
+  // if (hiddenHeader.includes(pathname)) return null;
   return (
-    <header className="flex sticky top-2 left-0 z-50 bg-slate-900 items-center justify-between w-full p-2 rounded-lg my-2 gap-2">
+    <header className="flex sticky top-0 left-0 z-50 bg-slate-100 items-center justify-between w-full px-10 py-4 gap-2 border-bottom shadow-lg">
       <NavigationMenu>
         <NavigationMenuList>
           <NavigationMenuItem>
@@ -74,10 +74,10 @@ export default function Header(props: HeaderProps) {
               </NavigationMenuLink>
             </Link>
           </NavigationMenuItem>
-          <Input/>
         </NavigationMenuList>
       </NavigationMenu>
-      {!sessionCookie ? (
+      <Input type="search" placeholder="Cari Produk" className="w-full mx-auto" />
+      {/* {!sessionCookie ? (
         <NavigationMenu className="flex justify-between">
           <NavigationMenuList>
             <NavigationMenuItem>
@@ -92,18 +92,22 @@ export default function Header(props: HeaderProps) {
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
-      ) : (
-        <NavigationMenu className="flex justify-between">
-          <NavigationMenuList>
-            <NavigationMenuItem>
-              <Button asChild variant="secondary">
-                <Link href="/events" className="flex gap-1 items-center">
-                  <Megaphone />
-                  <p>Events</p>
-                </Link>
+      ) : ( */}
+      <NavigationMenu className="flex justify-between">
+        <NavigationMenuList>
+          <NavigationMenuItem>
+            {/* <Button asChild variant="secondary">
+              <Link href="/events" className="flex gap-1 items-center">
+                <ShoppingCart />
+                <p>Cart</p>
+              </Link>
+            </Button> */}
+            <Button asChild variant="outline">
+                <Link href="/auth/signin">Sign In</Link>
               </Button>
-            </NavigationMenuItem>
-            {hideCreateButton.includes(pathname) ? null : (
+          </NavigationMenuItem>
+          {/* {hideCreateButton.includes(pathname) ? null :  */}
+          {/* (
               <NavigationMenuItem>
                 <Button asChild variant="secondary" className="sm:flex hidden">
                   <Link
@@ -111,7 +115,7 @@ export default function Header(props: HeaderProps) {
                     className="flex gap-1 items-center"
                   >
                     <PlusSquare />
-                    <p>Create Event</p>
+                    <p>Cart</p>
                   </Link>
                 </Button>
                 <Button
@@ -125,56 +129,55 @@ export default function Header(props: HeaderProps) {
                   </Link>
                 </Button>
               </NavigationMenuItem>
-            )}
+            ) */}
+          {/* } */}
 
-            <NavigationMenuItem>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="secondary" size="icon">
-                    <User />
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  className="w-56 md:mr-0 mr-2"
-                  sideOffset={6}
-                >
-                  <DropdownMenuLabel>
-                    <p>{sessionData?.username}</p>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuGroup>
-                    <DropdownMenuItem>
-                      <Link className="w-full" href="/profile">
-                        Profile
-                      </Link>
-                    </DropdownMenuItem>
-                    <Separator className="my-2" />
-                    <DropdownMenuItem>
-                      <Link className="w-full" href="/events">
-                        Events
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link className="w-full" href="/faq">
-                        FAQ
-                      </Link>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Link className="w-full" href="/about">
-                        About Us
-                      </Link>
-                    </DropdownMenuItem>
-                    <Separator className="my-2" />
-                    <DropdownMenuItem onClick={handleLogout}>
-                      Log Out
-                    </DropdownMenuItem>
-                  </DropdownMenuGroup>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            </NavigationMenuItem>
-          </NavigationMenuList>
-        </NavigationMenu>
-      )}
+          {/* <NavigationMenuItem>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="secondary" size="icon">
+                  <User />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-56 md:mr-0 mr-2" sideOffset={6}>
+                <DropdownMenuLabel>
+                  <p>{sessionData?.username}</p>
+
+                  <p>Name</p>
+                </DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuGroup>
+                  <DropdownMenuItem>
+                    <Link className="w-full" href="/profile">
+                      Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  <Separator className="my-2" />
+                  <DropdownMenuItem>
+                    <Link className="w-full" href="/products">
+                      Products
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link className="w-full" href="/faq">
+                      FAQ
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Link className="w-full" href="/about">
+                      About Us
+                    </Link>
+                  </DropdownMenuItem>
+                  <Separator className="my-2" />
+                  <DropdownMenuItem onClick={handleLogout}>
+                  <DropdownMenuItem>Log Out</DropdownMenuItem>
+                </DropdownMenuGroup>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </NavigationMenuItem> */}
+        </NavigationMenuList>
+      </NavigationMenu>
+      {/* )} */}
     </header>
   );
 }
