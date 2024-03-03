@@ -64,6 +64,7 @@ export const signinUser = async (req: Request, res: Response) => {
       success: true,
       message: 'Berhasil Sign In',
     });
+
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -76,8 +77,7 @@ export const signinUser = async (req: Request, res: Response) => {
 
 export const signupUser = async (req: Request, res: Response) => {
   try {
-    const { name, username, email, password, refCode }: inputPayload =
-      req.body;
+    const { name, username, email, password, refCode }: inputPayload = req.body;
 
     const user = await prisma.user.findUnique({
       where: {
@@ -109,78 +109,78 @@ export const signupUser = async (req: Request, res: Response) => {
     // hash password
     const hashedPassword = hash(password);
 
-    if (!refCode) {
-      const createUser = await prisma.user.create({
-        data: {
-          name,
-          username,
-          email,
-          password: hashedPassword,
-          // referral,
-        },
-      });
-
-      return res.status(200).json({
-        code: 200,
-        success: true,
-        message: `Register berhasil`,
-        data: {
-          ...createUser,
-          password: null,
-        },
-      });
-    }
-
-    // referral is entered by user
-    if (refCode) {
-      const userReferral = await prisma.user.findFirst({
-        where: {
-          // referral: refCode,
-        },
-        select: {
-          id: true,
-        },
-      });
-
-      if (!userReferral) {
-        return res.status(400).json({
-          code: 400,
-          success: false,
-          message: `Referral code ${refCode} tidak ditemukan`,
-        });
-      }
-
-      const referralTransaction = await prisma.$transaction(async (prisma) => {
+      if (!refCode) {
         const createUser = await prisma.user.create({
           data: {
             name,
             username,
             email,
             password: hashedPassword,
-            referral,
+            // referral,
           },
         });
 
-        const createVoucher = await prisma.voucher.create({
+        return res.status(200).json({
+          code: 200,
+          success: true,
+          message: `Register berhasil`,
           data: {
-            userId: createUser?.id,
-            // expireDate,
+            ...createUser,
+            password: null,
           },
         });
-        return { createUser, createVoucher };
-      });
+      }
 
-      return res.status(200).json({
-        code: 200,
-        success: true,
-        message: `Register User dengan menggunakan Referral code ${refCode} berhasil`,
-        data: {
-          ...referralTransaction.createUser,
-          password: null,
-          voucher: referralTransaction.createVoucher,
-        },
-      });
-    }
+    //   // referral is entered by user
+    //   if (refCode) {
+    //     const userReferral = await prisma.user.findFirst({
+    //       where: {
+    //         // referral: refCode,
+    //       },
+    //       select: {
+    //         id: true,
+    //       },
+    //     });
+
+    //     if (!userReferral) {
+    //       return res.status(400).json({
+    //         code: 400,
+    //         success: false,
+    //         message: `Referral code ${refCode} tidak ditemukan`,
+    //       });
+    //     }
+
+    //     const referralTransaction = await prisma.$transaction(async (prisma) => {
+    //       const createUser = await prisma.user.create({
+    //         data: {
+    //           name,
+    //           username,
+    //           email,
+    //           password: hashedPassword,
+    //           referral,
+    //         },
+    //       });
+
+    //       const createVoucher = await prisma.voucher.create({
+    //         data: {
+    //           userId: createUser?.id,
+    //           // expireDate,
+    //         },
+    //       });
+    //       return { createUser, createVoucher };
+    //     });
+
+    //     return res.status(200).json({
+    //       code: 200,
+    //       success: true,
+    //       message: `Register User dengan menggunakan Referral code ${refCode} berhasil`,
+    //       data: {
+    //         ...referralTransaction.createUser,
+    //         password: null,
+    //         voucher: referralTransaction.createVoucher,
+    //       },
+    //     });
+    //   }
   } catch (error) {
     console.log(error);
     return res.status(500).json({

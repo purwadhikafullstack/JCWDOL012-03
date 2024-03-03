@@ -4,7 +4,7 @@ import {
     signoutUser,
     signupUser,
   } from '@/controllers/auth.controller';
-  import authenticationMiddleware from '@/middleware/authentication.middleware';
+  import authenticationMiddleware from '@/middleware/auth.middleware';
   import { registerValidator } from '@/middleware/registerValidator.middleware';
   import { Router } from 'express';
   
