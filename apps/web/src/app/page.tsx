@@ -8,11 +8,13 @@ import Container from '@/components/Container';
 
 export default function Home() {
   return (
-    <div className="p-10">
+    <div>
+      <Header />
       <Container>
         <Hero />
         <ProductList />
       </Container>
+      <Footer />
     </div>
   );
 }
