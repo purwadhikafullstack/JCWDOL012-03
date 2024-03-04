@@ -17,6 +17,7 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
+import { signIn } from 'next-auth/react';
 
 const formSchema = z.object({
   name: z.string().min(3, { message: 'Silakan masukkan nama anda' }),
@@ -159,7 +160,7 @@ export default function UserSignUpForm() {
             </span>
           </div>
         </div>
-        <Button variant="outline" type="button">
+        <Button variant="outline" type="button" onClick={() => signIn('google')}>
           <Icons.google className="mr-2 h-4 w-4" />
           Google
         </Button>

@@ -17,6 +17,8 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
+import { signIn } from 'next-auth/react';
+
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email.' }),

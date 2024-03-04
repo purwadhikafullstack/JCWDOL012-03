@@ -4,6 +4,10 @@ import { Request, Response } from 'express';
 import { generateReferral } from '@/utils/referral';
 import { compare, hash } from '@/utils/bcrypt';
 import { generateToken } from '@/utils/jwt';
+import { authorizationUrl } from '@/middleware/socialAuth.middleware';
+import { oauth2 } from 'googleapis/build/src/apis/oauth2';
+import { oAuth2Client } from '@/config';
+import { google } from 'googleapis';
 
 export interface inputPayload {
   name: string;
@@ -17,6 +21,12 @@ export interface signinPayload {
   email: string;
   password: string;
 }
+
+// export interface socialAuthPayLoad {
+//   name: string;
+//   email: string;
+//   avatar: string;
+// }
 
 export const signinUser = async (req: Request, res: Response) => {
   try {
@@ -64,7 +74,6 @@ export const signinUser = async (req: Request, res: Response) => {
       success: true,
       message: 'Berhasil Sign In',
     });
-
   } catch (error) {
     console.log(error);
     return res.status(500).json({
@@ -109,7 +118,48 @@ export const signupUser = async (req: Request, res: Response) => {
     // hash password
     const hashedPassword = hash(password);
 
-      if (!refCode) {
+    if (!refCode) {
+      const createUser = await prisma.user.create({
+        data: {
+          name,
+          username,
+          email,
+          password: hashedPassword,
+          // referral,
+        },
+      });
+
+      return res.status(200).json({
+        code: 200,
+        success: true,
+        message: `Register berhasil`,
+        data: {
+          ...createUser,
+          password: null,
+        },
+      });
+    }
+
+    // referral is entered by user
+    if (refCode) {
+      const userReferral = await prisma.user.findFirst({
+        where: {
+          // referral: refCode,
+        },
+        select: {
+          id: true,
+        },
+      });
+
+      if (!userReferral) {
+        return res.status(400).json({
+          code: 400,
+          success: false,
+          message: `Referral code ${refCode} tidak ditemukan`,
+        });
+      }
+
+      const referralTransaction = await prisma.$transaction(async (prisma) => {
         const createUser = await prisma.user.create({
           data: {
             name,
@@ -120,67 +170,90 @@ export const signupUser = async (req: Request, res: Response) => {
           },
         });
 
-        return res.status(200).json({
-          code: 200,
-          success: true,
-          message: `Register berhasil`,
-          data: {
-            ...createUser,
-            password: null,
-          },
-        });
-      }
+        // const createVoucher = await prisma.voucher.create({
+        //   data: {
+        //     userId: createUser?.id,
+        //     // expireDate,
+        //   },
+        // });
+        // return { createUser, createVoucher };
+      });
 
-    //   // referral is entered by user
-    //   if (refCode) {
-    //     const userReferral = await prisma.user.findFirst({
-    //       where: {
-    //         // referral: refCode,
-    //       },
-    //       select: {
-    //         id: true,
-    //       },
-    //     });
+      return res.status(200).json({
+        code: 200,
+        success: true,
+        message: `Register User dengan menggunakan Referral code ${refCode} berhasil`,
+        data: {
+          // ...referralTransaction.createUser,
+          // password: null,
+          // voucher: referralTransaction.createVoucher,
+        },
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      code: 500,
+      success: false,
+      message: 'Internal server error',
+    });
+  }
+};
 
-    //     if (!userReferral) {
-    //       return res.status(400).json({
-    //         code: 400,
-    //         success: false,
-    //         message: `Referral code ${refCode} tidak ditemukan`,
-    //       });
-    //     }
+export const socialAuth = (req: Request, res: Response) => {
+  return res.redirect(authorizationUrl);
+};
 
-    //     const referralTransaction = await prisma.$transaction(async (prisma) => {
-    //       const createUser = await prisma.user.create({
-    //         data: {
-    //           name,
-    //           username,
-    //           email,
-    //           password: hashedPassword,
-    //           referral,
-    //         },
-    //       });
+export const socialAuthCallback = async (req: Request, res: Response) => {
+  try {
+    const { code } = req.query;
 
-    //       const createVoucher = await prisma.voucher.create({
-    //         data: {
-    //           userId: createUser?.id,
-    //           // expireDate,
-    //         },
-    //       });
-    //       return { createUser, createVoucher };
-    //     });
+    const { tokens } = await oAuth2Client.getToken(code as string);
 
-    //     return res.status(200).json({
-    //       code: 200,
-    //       success: true,
-    //       message: `Register User dengan menggunakan Referral code ${refCode} berhasil`,
-    //       data: {
-    //         ...referralTransaction.createUser,
-    //         password: null,
-    //         voucher: referralTransaction.createVoucher,
-    //       },
-    //     });
-    //   }
+    const oauth2 = google.oauth2({
+      auth: oAuth2Client,
+      version: 'v2',
+    });
+
+    const { data } = await oauth2.userinfo.get();
+
+    if (!data.email || !data.name || !data.picture) {
+      return res.json({
+        data: data,
+      });
+    }
+
+    let user = await prisma.user.findUnique({
+      where: {
+        email: data.email,
+      },
+    });
+
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          name: data.name,
+          email: data.email,
+          avatar: data.picture,
+          username:  data.name,
+          password: 'defaultPassword',
+        },
+      });
+    }
+
+    const payload = {
+      id: user?.id,
+      name: user?.name,
+      email: user?.email,
+      avatar: user?.avatar,
+    };
+
+    return res.status(200).json({
+      code: 200,
+      success: true,
+      message: 'Register berhasil',
+    });
+    
   } catch (error) {
     console.log(error);
     return res.status(500).json({
