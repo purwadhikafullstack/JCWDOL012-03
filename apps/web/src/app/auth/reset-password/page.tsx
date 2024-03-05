@@ -1,8 +1,8 @@
-import Image from 'next/image';
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
-import { buttonVariants } from '@/components/ui/button';
-import UserSignUpForm from '@/components/form/SignUpForm';
+import Image from "next/image"
+import Link from "next/link"
+import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
+import UserSignInForm from "@/components/form/SignInForm"
 
 export default function AuthenticationPage() {
   return (
@@ -27,12 +27,22 @@ export default function AuthenticationPage() {
         <Link
           href="/"
           className={cn(
-            buttonVariants({ variant: 'outline' }),
-            'absolute left-4 top-4 md:left-8 md:top-8',
+            buttonVariants({ variant: "outline" }),
+            "absolute right-4 top-4 md:right-8 md:top-8"
           )}
         >
           Kembali ke halaman utama
         </Link>
+        <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
+          <div className="absolute inset-0 bg-zinc-900" />
+          <div className="relative z-20 mt-auto">
+            <blockquote className="space-y-2">
+              <p className="text-lg">
+                &ldquo;Berbelanja bahan makanan sehari-hari di FreshMart adalah pilihan terbaik&rdquo;
+              </p>
+            </blockquote>
+          </div>
+        </div>
         <div className="lg:p-8">
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
@@ -40,24 +50,13 @@ export default function AuthenticationPage() {
                 Selamat datang di FreshMart
               </h1>
               <p className="text-sm text-muted-foreground">
-                Silakan masukkan email anda untuk registrasi
+                Masukkan email dan password anda untuk Login
               </p>
             </div>
-            <UserSignUpForm />
-          </div>
-        </div>
-        <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
-          <div className="absolute inset-0 bg-zinc-900" />
-          <div className="relative z-20 mt-auto">
-            <blockquote className="space-y-2">
-              <p className="text-lg">
-                &ldquo;FreshMart selalu mempersiapkan bahan makanan dengan
-                kualitas terbaik bagi kebutuhan anda&rdquo;
-              </p>
-            </blockquote>
+            <UserSignInForm />
           </div>
         </div>
       </div>
     </>
-  );
+  )
 }

@@ -1,4 +1,8 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  devServer: {
+    https: false,
+  },
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;

@@ -31,20 +31,20 @@ const formSchema = z.object({
 
 export default function UserSignUpForm() {
   const router = useRouter();
-  const [nameValue, setNameValue] = useState<string>('');
-  const [usernameValue, setUsernameValue] = useState<string>('');
+  // const [nameValue, setNameValue] = useState<string>('');
+  // const [usernameValue, setUsernameValue] = useState<string>('');
   const [emailValue, setEmailValue] = useState<string>('');
-  const [passwordValue, setPasswordValue] = useState<string>('');
-  const [refCodeValue, setRefCodeValue] = useState<string>('');
+  // const [passwordValue, setPasswordValue] = useState<string>('');
+  // const [refCodeValue, setRefCodeValue] = useState<string>('');
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: nameValue,
-      username: usernameValue,
+      // name: nameValue,
+      // username: usernameValue,
       email: emailValue,
-      password: passwordValue,
-      refCode: refCodeValue,
+      // password: passwordValue,
+      // refCode: refCodeValue,
     },
   });
 
@@ -76,7 +76,7 @@ export default function UserSignUpForm() {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid gap-2">
             <div className="grid gap-3">
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="name"
                 render={({ field }: any) => (
@@ -99,7 +99,7 @@ export default function UserSignUpForm() {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
               <FormField
                 control={form.control}
                 name="email"
@@ -112,7 +112,7 @@ export default function UserSignUpForm() {
                   </FormItem>
                 )}
               />
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="password"
                 render={({ field }: any) => (
@@ -143,7 +143,7 @@ export default function UserSignUpForm() {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
             </div>
             <Button variant="outline" type="submit" className="my-1">
               Daftar

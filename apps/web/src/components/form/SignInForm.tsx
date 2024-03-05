@@ -124,6 +124,12 @@ export default function UserSignInForm() {
             <Link href="/auth/signup"> Daftar disini</Link>
           </span>
         </div>
+        <div className="relative flex justify-center text-xs">
+          <span className="bg-background px-2 text-muted-foreground">
+            Lupa password anda?
+            <Link href="/auth/signin"> Klik disini</Link>
+          </span>
+        </div>
       </div>
     </Form>
   );
