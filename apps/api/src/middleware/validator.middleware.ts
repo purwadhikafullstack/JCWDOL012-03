@@ -25,7 +25,7 @@ export const verificationValidator = [
     .notEmpty()
     .isLength({ min: 8 })
     .withMessage('Password is required, at least 8 characters long'),
-  body('referralCode'),
+  body('refCode'),
 
   (req: Request, res: Response, next: NextFunction) => {
     const errors = validationResult(req);

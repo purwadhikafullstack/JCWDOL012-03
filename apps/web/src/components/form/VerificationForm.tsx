@@ -17,47 +17,65 @@ import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
-import { signIn } from 'next-auth/react';
-
 
 const formSchema = z.object({
-  email: z.string().email({ message: 'Please enter a valid email.' }),
+  name: z.string().min(3, { message: 'Silakan masukkan nama anda' }),
+  username: z.string().min(3, { message: 'Silakan masukkan username anda' }),
+  // email: z.string().email({ message: 'Silakan masukkan email anda' }),
   password: z
     .string()
-    .min(6, { message: 'Password must be at least 6 characters.' }),
+    .min(6, { message: 'Password minimal terdiri dari 6 karakter' }),
+  refCode: z.string().optional(),
 });
 
-export default function UserSignInForm() {
+export default function VerificationForm() {
   const router = useRouter();
-  const [emailValue, setEmailValue] = useState<string>('');
+  const [nameValue, setNameValue] = useState<string>('');
+  const [usernameValue, setUsernameValue] = useState<string>('');
+  //   const [emailValue, setEmailValue] = useState<string>('');
   const [passwordValue, setPasswordValue] = useState<string>('');
+  const [refCodeValue, setRefCodeValue] = useState<string>('');
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: emailValue,
+      name: nameValue,
+      username: usernameValue,
+      //   email: emailValue,
       password: passwordValue,
+      refCode: refCodeValue,
     },
   });
+
+  const getTokenFromQuery = () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('token') || ''; // Menggunakan '' jika tidak ada token
+  };
+
+  const token = getTokenFromQuery();
+  console.log(token); // Menampilkan token dari query parameter
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await axios
-        .post('http://localhost:8000/api/auth/login', JSON.stringify(values), {
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json',
+        .post(
+          'http://localhost:8000/api/register/verification',
+          JSON.stringify(values),
+          {
+            withCredentials: true,
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
           },
-        })
+        )
         .then((res) => res.data)
         .catch((err) => console.log(err));
 
       console.log(response);
-
       if (response.success === true) {
-        router.push('/');
+        router.push('/auth/signin');
         router.refresh();
-        form.reset();
       }
     } catch (error) {
       console.log(error);
@@ -72,6 +90,30 @@ export default function UserSignInForm() {
             <div className="grid gap-3">
               <FormField
                 control={form.control}
+                name="name"
+                render={({ field }: any) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input type="text" placeholder="Name" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }: any) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input type="text" placeholder="Username" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {/* <FormField
+                control={form.control}
                 name="email"
                 render={({ field }: any) => (
                   <FormItem>
@@ -81,7 +123,7 @@ export default function UserSignInForm() {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
               <FormField
                 control={form.control}
                 name="password"
@@ -98,38 +140,48 @@ export default function UserSignInForm() {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={form.control}
+                name="refCode"
+                render={({ field }: any) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        type="text"
+                        placeholder="Kode Referral (Jika ada)"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
             </div>
             <Button variant="outline" type="submit" className="my-1">
-              Login
+              Verifikasi
             </Button>
           </div>
         </form>
-        <div className="relative">
+        {/* <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full" />
           </div>
           <div className="relative flex justify-center text-xs">
             <span className="bg-background px-2 text-muted-foreground">
-              Atau masuk dengan metode lain
+              Atau daftar dengan metode lain
             </span>
           </div>
         </div>
-        <Button variant="outline" type="button">
+        <Button variant="outline" type="button" onClick={() => signIn('google')}>
           <Icons.google className="mr-2 h-4 w-4" />
           Google
         </Button>
         <div className="relative flex justify-center text-xs">
           <span className="bg-background px-2 text-muted-foreground">
-            Belum punya akun?
-            <Link href="/auth/signup"> Daftar disini</Link>
+            Sudah punya akun?
+            <Link href="/auth/signin"> Login disini</Link>
           </span>
-        </div>
-        <div className="relative flex justify-center text-xs">
-          <span className="bg-background px-2 text-muted-foreground">
-            Lupa password anda?
-            <Link href="/auth/signin"> Klik disini</Link>
-          </span>
-        </div>
+        </div> */}
       </div>
     </Form>
   );

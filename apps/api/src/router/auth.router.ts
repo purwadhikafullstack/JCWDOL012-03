@@ -2,7 +2,6 @@ import {
   getSessionUser,
   signinUser,
   signoutUser,
-  signupUser,
   socialAuth,
   socialAuthCallback,
 } from '@/controllers/auth.controller';

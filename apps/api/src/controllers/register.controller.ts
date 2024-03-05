@@ -3,16 +3,12 @@ import dayjs from 'dayjs';
 import { Request, Response } from 'express';
 import { generateReferral } from '@/utils/referral';
 import { hash } from '@/utils/bcrypt';
-// import { generateToken } from '@/utils/jwt';
-// import { authorizationUrl } from '@/middleware/socialAuth.middleware';
-// import { oauth2 } from 'googleapis/build/src/apis/oauth2';
-// import { oAuth2Client } from '@/config';
-// import { google } from 'googleapis';
 import ejs from 'ejs';
 import path from 'path';
 import sendMail from '../utils/sendMail';
 import generateVerificationLink from '@/utils/verificationLink';
-import * as crypto from 'crypto';
+import jwt, { JwtPayload } from 'jsonwebtoken';
+import axios from 'axios';
 
 export interface registrationPayload {
   email: string;
@@ -21,7 +17,6 @@ export interface registrationPayload {
 export interface verificationPayload {
   name: string;
   username: string;
-  email: string;
   password: string;
   refCode?: string | undefined;
 }
@@ -82,17 +77,16 @@ export const userVerification = async (req: Request, res: Response) => {
   try {
     const { name, username, password, refCode } =
       req.body as verificationPayload;
+    // const referral = generateReferral(username);
 
-    const referral = generateReferral(username);
-    const tokenEmail = getEmailFromToken(req.query.token as string);
-
-    if (tokenEmail !== req.body.email) {
-      return res.status(400).json({
-        code: 400,
-        success: false,
-        message: 'Email tidak valid',
-      });
-    }
+    console.log(req.body);
+    
+    // Dapatkan token dari header Authorization
+    const token = req.headers.authorization?.split(' ')[1];
+    console.log(token);
+    
+    // Verifikasi dan dapatkan email dari token
+    const tokenEmail = getEmailFromToken(token as string);
 
     const hashedPassword = hash(password);
 
@@ -103,7 +97,7 @@ export const userVerification = async (req: Request, res: Response) => {
           username,
           email: tokenEmail,
           password: hashedPassword,
-        //   referral: referral,
+          //   referral: referral,
         },
       });
 
@@ -128,16 +122,19 @@ export const userVerification = async (req: Request, res: Response) => {
 };
 
 function getEmailFromToken(token: string): string {
-  // Lakukan dekripsi token untuk mendapatkan email
-  const secretKey = 'freshmart123';
+  const secretKey = 'freshmart12345678901234567890123';
 
   try {
-    const decipher = crypto.createDecipher('sha256', secretKey);
-    const decryptedEmail =
-      decipher.update(token, 'hex', 'utf-8') + decipher.final('utf-8');
-    return decryptedEmail;
+    // Verifikasi token menggunakan jwt.verify
+    const decodedToken = jwt.verify(token, secretKey) as JwtPayload;
+
+    console.log('Decoded token:', decodedToken);
+    // Dapatkan email dari payload
+    const email = decodedToken.email;
+
+    return email;
   } catch (error) {
-    console.error('Error decrypting email from token:', error);
+    console.error('Error verifying token:', error);
     throw new Error('Invalid token');
   }
 }
