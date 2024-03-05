@@ -8,6 +8,14 @@ import { authorizationUrl } from '@/middleware/socialAuth.middleware';
 import { oauth2 } from 'googleapis/build/src/apis/oauth2';
 import { oAuth2Client } from '@/config';
 import { google } from 'googleapis';
+import ejs from 'ejs';
+import path from 'path';
+import sendMail from '../utils/sendMail';
+import generateActivationLink from '@/utils/verificationLink';
+
+export interface registrationPayload {
+  email: string;
+}
 
 export interface inputPayload {
   name: string;
@@ -27,62 +35,6 @@ export interface signinPayload {
 //   email: string;
 //   avatar: string;
 // }
-
-export const signinUser = async (req: Request, res: Response) => {
-  try {
-    const { email, password }: signinPayload = req.body;
-
-    const userWithEmail = await prisma.user.findUnique({
-      where: {
-        email,
-      },
-    });
-
-    if (!userWithEmail) {
-      return res.status(400).json({
-        code: 400,
-        success: false,
-        message: 'Email atau Password salah',
-      });
-    }
-
-    const isValidPassword = compare(password, userWithEmail.password);
-
-    if (!isValidPassword) {
-      return res.status(400).json({
-        code: 400,
-        success: false,
-        message: 'Email atau Password salah',
-      });
-    }
-
-    const jwtToken: string = generateToken({
-      id: userWithEmail.id,
-      username: userWithEmail.username,
-      email: userWithEmail.email,
-      role: userWithEmail.role,
-    });
-
-    res.cookie('user-token', jwtToken, {
-      secure: false,
-      httpOnly: true,
-      expires: dayjs().add(7, 'days').toDate(),
-    });
-
-    return res.status(200).json({
-      code: 200,
-      success: true,
-      message: 'Berhasil Sign In',
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      code: 500,
-      success: false,
-      message: 'Error internal server',
-    });
-  }
-};
 
 export const signupUser = async (req: Request, res: Response) => {
   try {
@@ -204,6 +156,62 @@ export const socialAuth = (req: Request, res: Response) => {
   return res.redirect(authorizationUrl);
 };
 
+export const signinUser = async (req: Request, res: Response) => {
+  try {
+    const { email, password }: signinPayload = req.body;
+
+    const userWithEmail = await prisma.user.findUnique({
+      where: {
+        email,
+      },
+    });
+
+    if (!userWithEmail) {
+      return res.status(400).json({
+        code: 400,
+        success: false,
+        message: 'Email atau Password salah',
+      });
+    }
+
+    const isValidPassword = compare(password, userWithEmail.password);
+
+    if (!isValidPassword) {
+      return res.status(400).json({
+        code: 400,
+        success: false,
+        message: 'Email atau Password salah',
+      });
+    }
+
+    const jwtToken: string = generateToken({
+      id: userWithEmail.id,
+      username: userWithEmail.username,
+      email: userWithEmail.email,
+      role: userWithEmail.role,
+    });
+
+    res.cookie('user-token', jwtToken, {
+      secure: false,
+      httpOnly: true,
+      expires: dayjs().add(7, 'days').toDate(),
+    });
+
+    return res.status(200).json({
+      code: 200,
+      success: true,
+      message: 'Berhasil Sign In',
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      code: 500,
+      success: false,
+      message: 'Error internal server',
+    });
+  }
+};
+
 export const socialAuthCallback = async (req: Request, res: Response) => {
   try {
     const { code } = req.query;
@@ -235,7 +243,7 @@ export const socialAuthCallback = async (req: Request, res: Response) => {
           name: data.name,
           email: data.email,
           avatar: data.picture,
-          username:  data.name,
+          username: data.name,
           password: 'defaultPassword',
         },
       });
@@ -253,7 +261,6 @@ export const socialAuthCallback = async (req: Request, res: Response) => {
       success: true,
       message: 'Register berhasil',
     });
-    
   } catch (error) {
     console.log(error);
     return res.status(500).json({

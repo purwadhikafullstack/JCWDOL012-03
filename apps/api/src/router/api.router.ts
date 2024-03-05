@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import authRouter from '@/router/auth.router';
+import registerRouter from './register.router';
 // import userRouter from '@/router/user.router';
 // import transactionRouter from '@/router/transaction.router';
 // import analyticsRouter from '@/router/analytics.router';
@@ -7,6 +8,7 @@ import authRouter from '@/router/auth.router';
 const apiRouter = Router();
 
 apiRouter.use('/auth', authRouter);
+apiRouter.use('/register', registerRouter);
 // apiRouter.use('/user', userRouter);
 // apiRouter.use('/transaction', transactionRouter);
 // apiRouter.use('/analytics', analyticsRouter);
