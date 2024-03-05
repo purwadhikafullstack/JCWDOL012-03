@@ -18,6 +18,7 @@ import {
   Stack,
 } from '@chakra-ui/react';
 import { HamburgerIcon, CloseIcon, AddIcon } from '@chakra-ui/icons';
+import Link from 'next/link';
 
 interface Props {
   children: React.ReactNode;
@@ -80,6 +81,11 @@ export default function Header() {
             >
               Action
             </Button>
+            {/* <Link href="/login">
+              <Button variant="outline" colorScheme="#FFA000">
+                Login
+              </Button>
+            </Link> */}
             <Menu>
               <MenuButton
                 as={Button}
