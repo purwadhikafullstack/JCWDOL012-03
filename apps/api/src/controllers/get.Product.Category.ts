@@ -3,12 +3,16 @@ import prisma from '@/prisma';
 
 const GetProductCategory = async (req: Request, res: Response) => {
   try {
-    const getProduct = await prisma.category.findMany();
+    const getCategory = await prisma.category.findMany({
+      include: {
+        products: true,
+      },
+    });
 
     return res.status(200).json({
       code: 200,
       message: 'data retrieved',
-      data: getProduct,
+      data: getCategory,
     });
   } catch (error) {
     return res.status(500).json({
@@ -17,3 +21,5 @@ const GetProductCategory = async (req: Request, res: Response) => {
     });
   }
 };
+
+export default GetProductCategory;
