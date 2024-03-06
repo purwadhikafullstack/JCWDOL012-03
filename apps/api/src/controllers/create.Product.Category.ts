@@ -4,13 +4,23 @@ import prisma from '@/prisma';
 const CreateProductCategory = async (req: Request, res: Response) => {
   try {
     const { categoryInput } = req.body;
-    const existingCategory = await prisma.category.findMany();
+
+    const createCategory = await prisma.category.create({
+      data: {
+        name: categoryInput,
+      },
+    });
 
     return res.status(200).json({
       code: 200,
-      data: existingCategory,
+      message: 'category succesfully created',
     });
-  } catch (error) {}
+  } catch (error) {
+    return res.status(500).json({
+      code: 500,
+      message: 'internal server error',
+    });
+  }
 };
 
 export default CreateProductCategory;
