@@ -6,7 +6,7 @@ import Logo from '/public/logo.png';
 import Image from 'next/image';
 import axios from 'axios';
 import { useRouter, usePathname } from 'next/navigation';
-// import { getSessionClient } from '@/services/client';
+import { getSessionClient } from '@/services/client';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
 import { Separator } from '../ui/separator';
@@ -27,33 +27,33 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface HeaderProps {
   sessionCookie?: string;
 }
 
-export default function Header() {
-  // export default function Header(props: HeaderProps) {
-  // const { sessionCookie } = props;
-  // const router = useRouter();
-  // const pathname = usePathname();
+export default function Header(props: HeaderProps) {
+  const { sessionCookie } = props;
+  const router = useRouter();
+  const pathname = usePathname();
   // const hiddenHeader = ['/auth/signin', '/auth/signup'];
   // const hideCreateButton = ['/create-event', '/event/[id]', '/event/[id]/edit'];
-  // const [sessionData, setSessionData] = useState<any>({});
+  const [sessionData, setSessionData] = useState<any>({});
 
-  // useEffect(() => {
-  //   getSessionClient(sessionCookie).then((data) => {
-  //     if (data) setSessionData(data);
-  //   });
-  // }, [sessionCookie]);
+  useEffect(() => {
+    getSessionClient(sessionCookie).then((data) => {
+      if (data) setSessionData(data);
+    });
+  }, [sessionCookie]);
 
-  // const handleLogout = async () => {
-  //   await axios.post('http://localhost:8000/api/auth/signout', {
-  //     withCredentials: true,
-  //   });
-  //   router.push('/');
-  //   router.refresh();
-  // };
+  const handleLogout = async () => {
+    await axios.post('http://localhost:8000/api/auth/logout', {
+      withCredentials: true,
+    });
+    router.push('/');
+    router.refresh();
+  };
 
   // if (hiddenHeader.includes(pathname)) return null;
   return (
@@ -76,108 +76,92 @@ export default function Header() {
           </NavigationMenuItem>
         </NavigationMenuList>
       </NavigationMenu>
-      <Input type="search" placeholder="Cari Produk" className="w-full mx-auto" />
-      {/* {!sessionCookie ? (
+      <Input
+        type="search"
+        placeholder="Cari Produk"
+        className="w-full mx-auto"
+      />
+      {!sessionCookie ? (
         <NavigationMenu className="flex justify-between">
           <NavigationMenuList>
             <NavigationMenuItem>
               <Button asChild variant="secondary">
-                <Link href="/auth/signin">Sign In</Link>
+                <Link href="/auth/signin">Login</Link>
               </Button>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Button asChild variant="secondary">
-                <Link href="/auth/signup">Sign Up</Link>
+                <Link href="/auth/signup">Daftar</Link>
               </Button>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
-      ) : ( */}
-      <NavigationMenu className="flex justify-between">
-        <NavigationMenuList>
-          <NavigationMenuItem>
-            {/* <Button asChild variant="secondary">
-              <Link href="/events" className="flex gap-1 items-center">
-                <ShoppingCart />
-                <p>Cart</p>
-              </Link>
-            </Button> */}
-            <Button asChild variant="outline">
-                <Link href="/auth/signin">Sign In</Link>
+      ) : (
+        <NavigationMenu className="flex justify-between">
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <Button asChild variant="secondary">
+                <Link href="/cart" className="flex gap-1 items-center">
+                  <ShoppingCart />
+                  <p>Keranjang</p>
+                </Link>
               </Button>
-          </NavigationMenuItem>
-          {/* {hideCreateButton.includes(pathname) ? null :  */}
-          {/* (
-              <NavigationMenuItem>
-                <Button asChild variant="secondary" className="sm:flex hidden">
-                  <Link
-                    href="/create-event"
-                    className="flex gap-1 items-center"
-                  >
-                    <PlusSquare />
-                    <p>Cart</p>
-                  </Link>
-                </Button>
-                <Button
-                  asChild
-                  variant="secondary"
-                  className="sm:hidden flex"
-                  size="icon"
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="secondary" size="icon">
+                    <Avatar>
+                      <AvatarImage src="https://github.com/shadcn.png" />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent
+                  className="w-56 md:mr-0 mr-2 bg-white"
+                  sideOffset={6}
                 >
-                  <Link href="/create-event">
-                    <PlusSquare />
-                  </Link>
-                </Button>
-              </NavigationMenuItem>
-            ) */}
-          {/* } */}
-
-          {/* <NavigationMenuItem>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="secondary" size="icon">
-                  <User />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent className="w-56 md:mr-0 mr-2" sideOffset={6}>
-                <DropdownMenuLabel>
-                  <p>{sessionData?.username}</p>
-
-                  <p>Name</p>
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  <DropdownMenuItem>
-                    <Link className="w-full" href="/profile">
-                      Profile
-                    </Link>
-                  </DropdownMenuItem>
-                  <Separator className="my-2" />
-                  <DropdownMenuItem>
-                    <Link className="w-full" href="/products">
-                      Products
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link className="w-full" href="/faq">
-                      FAQ
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem>
-                    <Link className="w-full" href="/about">
-                      About Us
-                    </Link>
-                  </DropdownMenuItem>
-                  <Separator className="my-2" />
-                  <DropdownMenuItem onClick={handleLogout}>
-                  <DropdownMenuItem>Log Out</DropdownMenuItem>
-                </DropdownMenuGroup>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </NavigationMenuItem> */}
-        </NavigationMenuList>
-      </NavigationMenu>
-      {/* )} */}
+                  <DropdownMenuLabel>
+                    <p>{sessionData?.name}</p>
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator />
+                  <DropdownMenuGroup>
+                    <DropdownMenuItem>
+                      <Link className="w-full" href="/profile">
+                        Profile
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Separator className="my-2 bg-slate-500" />
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link className="w-full" href="/products">
+                        Semua Produk
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link className="w-full" href="/faq">
+                        FAQ
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Link className="w-full" href="/about">
+                        Tentang Kami
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem>
+                      <Separator className="my-2 bg-slate-500" />
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleLogout}>
+                      Log Out
+                    </DropdownMenuItem>
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
+      )}
     </header>
   );
 }

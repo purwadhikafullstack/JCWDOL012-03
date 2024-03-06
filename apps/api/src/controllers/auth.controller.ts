@@ -13,17 +13,6 @@ import path from 'path';
 import sendMail from '../utils/sendMail';
 import generateActivationLink from '@/utils/verificationLink';
 
-export interface registrationPayload {
-  email: string;
-}
-
-export interface inputPayload {
-  name: string;
-  username: string;
-  email: string;
-  password: string;
-  refCode?: string | undefined;
-}
 
 export interface signinPayload {
   email: string;

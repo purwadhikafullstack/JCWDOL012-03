@@ -8,7 +8,7 @@ import path from 'path';
 import sendMail from '../utils/sendMail';
 import generateVerificationLink from '@/utils/verificationLink';
 import jwt, { JwtPayload } from 'jsonwebtoken';
-import axios from 'axios';
+
 
 export interface registrationPayload {
   email: string;

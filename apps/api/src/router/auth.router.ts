@@ -11,8 +11,6 @@ import { Router } from 'express';
 
 const authRouter: Router = Router();
 
-// authRouter.post('/register', registerValidator, userRegistration);
-// authRouter.post('/activation', activationValidator, signupUser);
 authRouter.post('/login', signinUser);
 authRouter.post('/logout', signoutUser);
 authRouter.get('/google', socialAuth);
