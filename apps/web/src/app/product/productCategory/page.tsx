@@ -1,10 +1,17 @@
+'use client';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import React from 'react';
-import { Box, Center, Text } from '@chakra-ui/react';
+import { Box, Button, Center, Text } from '@chakra-ui/react';
 import TableCategoryList from '@/components/tableCategoryList';
+import { useRouter } from 'next/navigation';
 
 function ProductCategory() {
+  const router = useRouter();
+
+  const handleNext = () => {
+    router.push('/product/productCategory/create');
+  };
   return (
     <>
       <Header />
@@ -21,6 +28,11 @@ function ProductCategory() {
         </Center>
         <Center mt={4}>
           <Box w={'60%'} bg={'#7DBE3C'} h={'6px'} borderRadius={'full'} />
+        </Center>
+        <Center mt={10}>
+          <Button colorScheme="blue" onClick={handleNext}>
+            Create
+          </Button>
         </Center>
         <Center>
           <TableCategoryList />

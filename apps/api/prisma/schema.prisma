@@ -77,10 +77,11 @@ model Product {
   stock       Int
   storeId     Int
   store       Store       @relation(fields: [storeId], references: [id])
-  categories  Category[]
+  categories  Category    @relation(fields: [categoryId], references: [id])
   Cart        Cart[]
   OrderItem   OrderItem[]
   Discount    Discount[]
+  categoryId  Int
 }
 
 model Category {

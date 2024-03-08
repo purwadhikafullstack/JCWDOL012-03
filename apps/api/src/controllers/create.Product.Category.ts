@@ -3,11 +3,24 @@ import prisma from '@/prisma';
 
 const CreateProductCategory = async (req: Request, res: Response) => {
   try {
-    const { categoryInput } = req.body;
+    const { name } = req.body;
+
+    const existingCategory = await prisma.category.findMany({
+      where: {
+        name,
+      },
+    });
+
+    if (existingCategory.length > 0) {
+      return res.status(400).json({
+        code: 400,
+        message: 'Category with this name already exists',
+      });
+    }
 
     const createCategory = await prisma.category.create({
       data: {
-        name: categoryInput,
+        name,
       },
     });
 
