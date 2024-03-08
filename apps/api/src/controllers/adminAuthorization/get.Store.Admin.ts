@@ -1,20 +1,25 @@
 import prisma from '@/prisma';
 import { Request, Response } from 'express';
+import { jwtDecode } from 'jwt-decode';
+
+export interface jwtPayload {
+  id: number;
+  role: string;
+}
 
 export const GetStoreAdmin = async (req: Request, res: Response) => {
   try {
     //cek role dari cookies
     //validasi superadmin
-    // const getCookies = req.cookies.SuperAdminCookie;
-    // const cookiesToDecode = jwtDecode<jwtPayload>(getCookies);
-    // const idSuperAdmin = cookiesToDecode.role;
+    const getCookies = req.cookies['user-token'];
+    const cookiesToDecode = jwtDecode<jwtPayload>(getCookies);
 
-    // if (idSuperAdmin.role !== 'superadmin') {
-    //   return res.status(401).json({
-    //     code: 401,
-    //     message: "you're not authorized",
-    //   });
-    // }
+    if (!cookiesToDecode) {
+      return res.status(401).json({
+        code: 401,
+        message: "you're not authorized",
+      });
+    }
 
     let { page = 1, limit = 5 } = req.query;
     page = typeof page === 'string' ? parseInt(page) : 1;
@@ -30,7 +35,7 @@ export const GetStoreAdmin = async (req: Request, res: Response) => {
       skip: offset,
       take: limit,
       include: {
-        storeAdmin: {
+        StoreAdmin: {
           include: {
             store: true,
           },
