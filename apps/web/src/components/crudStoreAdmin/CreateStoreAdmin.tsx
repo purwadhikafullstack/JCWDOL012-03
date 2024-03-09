@@ -2,9 +2,9 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { VStack, Button, Center } from '@chakra-ui/react';
-import CustomToast from './ToastCustom';
+import CustomToast from '../ToastCustom';
 import StoreAdminFormInput from './CreateStoreAdminInput';
-import { validationSchema } from '../common/helper/validationSchema';
+import { validationSchema } from '../../common/helper/validationSchema';
 
 interface Store {
   id: string;

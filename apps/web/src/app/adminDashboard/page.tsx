@@ -21,8 +21,8 @@ import {
   TabIndicator,
 } from '@chakra-ui/react';
 import StoreList from '@/components/StoreList';
-import CreateStoreAdmin from '@/components/CreateStoreAdmin';
-import GetDelUpdStoreAdmin from '@/components/GetDelUpdStoreAdmin';
+import CreateStoreAdmin from '@/components/crudStoreAdmin/CreateStoreAdmin';
+import GetDelUpdStoreAdmin from '@/components/crudStoreAdmin/GetDelUpdStoreAdmin';
 
 function AdminDashboard() {
   return (

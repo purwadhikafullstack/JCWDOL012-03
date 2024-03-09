@@ -15,7 +15,7 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import CustomToast from './ToastCustom';
+import CustomToast from '../ToastCustom';
 import { useRouter } from 'next/navigation';
 
 interface Pagination {
