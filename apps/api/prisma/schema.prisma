@@ -15,9 +15,9 @@ model User {
   email      String        @unique
   password   String
   name       String
-  refCode    String
+  refCode    String?
   phone      String?
-  avatar     String
+  avatar     String?
   addresses  Address[]
   carts      Cart[]
   orders     Order[]
@@ -47,7 +47,7 @@ model Store {
   location Location[]
   admins   StoreAdmin[]
   products Product[]
-  Order    Order[]
+  order    Order[]
 }
 
 model Location {
@@ -77,11 +77,10 @@ model Product {
   stock       Int
   storeId     Int
   store       Store       @relation(fields: [storeId], references: [id])
-  categories  Category    @relation(fields: [categoryId], references: [id])
-  Cart        Cart[]
-  OrderItem   OrderItem[]
-  Discount    Discount[]
-  categoryId  Int
+  categories  Category[]
+  discount    Discount[]
+  cart        Cart[]
+  orderItem   OrderItem[]
 }
 
 model Category {
@@ -152,12 +151,3 @@ model Voucher {
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 }
-
-// model ReferralHistory {
-//   id         Int      @id @default(autoincrement())
-//   referrerId Int
-//   refereeId  Int
-//   referrer   User     @relation("Referrer", fields: [referrerId], references: [id])
-//   referee    User     @relation("Referee", fields: [refereeId], references: [id])
-//   createdAt  DateTime @default(now())
-// }

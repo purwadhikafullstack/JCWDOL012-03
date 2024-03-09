@@ -19,31 +19,31 @@ import express, {
   Router,
 } from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import { PORT } from './config';
-import apiRouter from './common/api.Router';
-// import cookieParser from 'cookie-parser';
+import apiRouter from './router/api.router';
 
 const app = express();
 
-app.use(
-  cors({
-    origin: 'http://localhost:3000',
-    credentials: true,
-    methods: ['GET', 'PUT', 'POST', 'PATCH', 'DELETE'],
-    allowedHeaders: [
-      'Content-Type',
-      'Authorization',
-      'X-Requested-With',
-      'X-HTTP-Method-Override',
-    ],
-  }),
-);
-app.use(json());
-// app.use(cookieParser());
+app.use(express.json());
+app.use(cookieParser());
+app.use(cors({ origin: ['http://localhost:3000'], credentials: true }));
 app.use(urlencoded({ extended: true }));
-
 app.use('/api', apiRouter);
 
 app.listen(PORT, () => {
-  console.log(` [API] -> http://localhost:${PORT}`);
+  console.log(`  ➜  [API] Local:   http://localhost:${PORT}/`);
+});
+
+app.get('/test', (req: Request, res: Response, next: NextFunction) => {
+  res.status(200).json({
+    success: true,
+    message: 'API is working',
+  });
+});
+
+app.all('*', (req: Request, res: Response, next: NextFunction) => {
+  const err = new Error(`Route ${req.originalUrl} not found`) as any;
+  err.statusCode = 404;
+  next(err);
 });
