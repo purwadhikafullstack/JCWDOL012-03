@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
-import UserSignUpForm from '@/components/form/SignUpForm';
+import UserSignUpForm from '@/components/auth/SignUpForm';
 
 export default function AuthenticationPage() {
   return (

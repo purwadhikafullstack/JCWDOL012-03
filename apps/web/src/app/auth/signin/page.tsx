@@ -1,8 +1,8 @@
-import Image from "next/image"
-import Link from "next/link"
-import { cn } from "@/lib/utils"
-import { buttonVariants } from "@/components/ui/button"
-import UserSignInForm from "@/components/form/SignInForm"
+import Image from 'next/image';
+import Link from 'next/link';
+import { cn } from '@/lib/utils';
+import { buttonVariants } from '@/components/ui/button';
+import UserSignInForm from '@/components/auth/SignInForm';
 
 export default function AuthenticationPage() {
   return (
@@ -27,8 +27,8 @@ export default function AuthenticationPage() {
         <Link
           href="/"
           className={cn(
-            buttonVariants({ variant: "outline" }),
-            "absolute right-4 top-4 md:right-8 md:top-8"
+            buttonVariants({ variant: 'outline' }),
+            'absolute right-4 top-4 md:right-8 md:top-8',
           )}
         >
           Kembali ke halaman utama
@@ -38,7 +38,8 @@ export default function AuthenticationPage() {
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">
               <p className="text-lg">
-                &ldquo;Berbelanja bahan makanan sehari-hari di FreshMart adalah pilihan terbaik&rdquo;
+                &ldquo;Berbelanja bahan makanan sehari-hari di FreshMart adalah
+                pilihan terbaik&rdquo;
               </p>
             </blockquote>
           </div>
@@ -58,5 +59,5 @@ export default function AuthenticationPage() {
         </div>
       </div>
     </>
-  )
+  );
 }

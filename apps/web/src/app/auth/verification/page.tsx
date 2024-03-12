@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
-import VerificationForm from '@/components/form/VerificationForm';
+import VerificationForm from '@/components/auth/VerificationForm';
 
 export default function AuthenticationPage() {
   return (

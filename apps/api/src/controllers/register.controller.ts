@@ -9,7 +9,6 @@ import sendMail from '../utils/sendMail';
 import generateVerificationLink from '@/utils/verificationLink';
 import jwt, { JwtPayload } from 'jsonwebtoken';
 
-
 export interface registrationPayload {
   email: string;
 }
@@ -77,18 +76,15 @@ export const userVerification = async (req: Request, res: Response) => {
   try {
     const { name, username, password, refCode } =
       req.body as verificationPayload;
-    // const referral = generateReferral(username);
+      
+      const token = req.headers.authorization?.split(' ')[1];
+      console.log(token);
 
-    console.log(req.body);
-    
-    // Dapatkan token dari header Authorization
-    const token = req.headers.authorization?.split(' ')[1];
-    console.log(token);
-    
-    // Verifikasi dan dapatkan email dari token
-    const tokenEmail = getEmailFromToken(token as string);
+      const tokenEmail = getEmailFromToken(token as string);
+      
+      const hashedPassword = hash(password);
 
-    const hashedPassword = hash(password);
+      // const referral = generateReferral(username);
 
     if (!refCode) {
       const createUser = await prisma.user.create({
@@ -97,7 +93,6 @@ export const userVerification = async (req: Request, res: Response) => {
           username,
           email: tokenEmail,
           password: hashedPassword,
-          //   referral: referral,
         },
       });
 
@@ -125,11 +120,9 @@ function getEmailFromToken(token: string): string {
   const secretKey = 'freshmart12345678901234567890123';
 
   try {
-    // Verifikasi token menggunakan jwt.verify
     const decodedToken = jwt.verify(token, secretKey) as JwtPayload;
 
     console.log('Decoded token:', decodedToken);
-    // Dapatkan email dari payload
     const email = decodedToken.email;
 
     return email;

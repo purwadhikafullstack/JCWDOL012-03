@@ -25,10 +25,6 @@ export interface signinPayload {
 //   avatar: string;
 // }
 
-export const socialAuth = (req: Request, res: Response) => {
-  return res.redirect(authorizationUrl);
-};
-
 export const signinUser = async (req: Request, res: Response) => {
   try {
     const { email, password }: signinPayload = req.body;
@@ -83,6 +79,28 @@ export const signinUser = async (req: Request, res: Response) => {
       message: 'Error internal server',
     });
   }
+};
+
+export const signoutUser = async (req: Request, res: Response) => {
+  try {
+    res.clearCookie('user-token');
+    return res.status(200).json({
+      code: 200,
+      success: true,
+      message: 'Sign Out berhasil',
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      code: 500,
+      success: false,
+      message: 'Error internal server',
+    });
+  }
+};
+
+export const socialAuth = (req: Request, res: Response) => {
+  return res.redirect(authorizationUrl);
 };
 
 export const socialAuthCallback = async (req: Request, res: Response) => {
@@ -144,23 +162,6 @@ export const socialAuthCallback = async (req: Request, res: Response) => {
   }
 };
 
-export const signoutUser = async (req: Request, res: Response) => {
-  try {
-    res.clearCookie('user-token');
-    return res.status(200).json({
-      code: 200,
-      success: true,
-      message: 'Sign Out berhasil',
-    });
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      code: 500,
-      success: false,
-      message: 'Error internal server',
-    });
-  }
-};
 
 export const getSessionUser = async (req: Request, res: Response) => {
   try {

@@ -18,10 +18,9 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 
-const formSchema = z.object({
+const verificationFormSchema = z.object({
   name: z.string().min(3, { message: 'Silakan masukkan nama anda' }),
-  username: z.string().min(3, { message: 'Silakan masukkan username anda' }),
-  // email: z.string().email({ message: 'Silakan masukkan email anda' }),
+  username: z.string().min(6, { message: 'Silakan masukkan username anda' }),
   password: z
     .string()
     .min(6, { message: 'Password minimal terdiri dari 6 karakter' }),
@@ -32,16 +31,14 @@ export default function VerificationForm() {
   const router = useRouter();
   const [nameValue, setNameValue] = useState<string>('');
   const [usernameValue, setUsernameValue] = useState<string>('');
-  //   const [emailValue, setEmailValue] = useState<string>('');
   const [passwordValue, setPasswordValue] = useState<string>('');
   const [refCodeValue, setRefCodeValue] = useState<string>('');
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof verificationFormSchema>>({
+    resolver: zodResolver(verificationFormSchema),
     defaultValues: {
       name: nameValue,
       username: usernameValue,
-      //   email: emailValue,
       password: passwordValue,
       refCode: refCodeValue,
     },
@@ -49,13 +46,12 @@ export default function VerificationForm() {
 
   const getTokenFromQuery = () => {
     const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('token') || ''; // Menggunakan '' jika tidak ada token
+    return urlParams.get('token') || '';
   };
 
   const token = getTokenFromQuery();
-  console.log(token); // Menampilkan token dari query parameter
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof verificationFormSchema>) => {
     try {
       const response = await axios
         .post(
@@ -162,26 +158,6 @@ export default function VerificationForm() {
             </Button>
           </div>
         </form>
-        {/* <div className="relative">
-          <div className="absolute inset-0 flex items-center">
-            <span className="w-full" />
-          </div>
-          <div className="relative flex justify-center text-xs">
-            <span className="bg-background px-2 text-muted-foreground">
-              Atau daftar dengan metode lain
-            </span>
-          </div>
-        </div>
-        <Button variant="outline" type="button" onClick={() => signIn('google')}>
-          <Icons.google className="mr-2 h-4 w-4" />
-          Google
-        </Button>
-        <div className="relative flex justify-center text-xs">
-          <span className="bg-background px-2 text-muted-foreground">
-            Sudah punya akun?
-            <Link href="/auth/signin"> Login disini</Link>
-          </span>
-        </div> */}
       </div>
     </Form>
   );

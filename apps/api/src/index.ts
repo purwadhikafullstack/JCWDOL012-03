@@ -32,7 +32,7 @@ app.use(urlencoded({ extended: true }));
 app.use('/api', apiRouter);
 
 app.listen(PORT, () => {
-  console.log(`  ➜  [API] Local:   http://localhost:${PORT}/`);
+  console.log(`  ➜  [API] Local: http://localhost:${PORT}/`);
 });
 
 app.get('/test', (req: Request, res: Response, next: NextFunction) => {
