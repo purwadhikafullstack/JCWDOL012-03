@@ -3,8 +3,9 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import VerificationForm from '@/components/auth/VerificationForm';
+import UpdateEmailForm from '@/components/auth/UpdateEmailForm';
 
-export default function VerificationPage() {
+export default function UpdateMailPage() {
   return (
     <>
       <div className="md:hidden">
@@ -24,15 +25,6 @@ export default function VerificationPage() {
         />
       </div>
       <div className="container relative hidden min-h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
-        <Link
-          href="/"
-          className={cn(
-            buttonVariants({ variant: 'outline' }),
-            'absolute left-4 top-4 md:left-8 md:top-8',
-          )}
-        >
-          Kembali ke halaman utama
-        </Link>
         <div className="lg:p-8">
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
@@ -40,10 +32,10 @@ export default function VerificationPage() {
                 Selamat datang di FreshMart
               </h1>
               <p className="text-sm text-muted-foreground">
-                Masukkan data yang diperlukan untuk verifikasi
+                Silakan klik tombol dibawah ini untuk mengubah email anda
               </p>
             </div>
-            <VerificationForm />
+            <UpdateEmailForm />
           </div>
         </div>
         <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">

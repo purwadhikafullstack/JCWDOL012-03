@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
 import UserSignInForm from '@/components/auth/SignInForm';
 
-export default function AuthenticationPage() {
+export default function SignInPage() {
   return (
     <>
       <div className="md:hidden">

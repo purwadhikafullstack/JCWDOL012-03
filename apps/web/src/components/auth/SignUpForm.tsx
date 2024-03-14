@@ -20,31 +20,17 @@ import axios from 'axios';
 import { signIn } from 'next-auth/react';
 
 const formSchema = z.object({
-  name: z.string().min(3, { message: 'Silakan masukkan nama anda' }),
-  username: z.string().min(3, { message: 'Silakan masukkan username anda' }),
   email: z.string().email({ message: 'Silakan masukkan email anda' }),
-  password: z
-    .string()
-    .min(6, { message: 'Password minimal terdiri dari 6 karakter' }),
-  refCode: z.string().optional(),
 });
 
 export default function UserSignUpForm() {
   const router = useRouter();
-  // const [nameValue, setNameValue] = useState<string>('');
-  // const [usernameValue, setUsernameValue] = useState<string>('');
   const [emailValue, setEmailValue] = useState<string>('');
-  // const [passwordValue, setPasswordValue] = useState<string>('');
-  // const [refCodeValue, setRefCodeValue] = useState<string>('');
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      // name: nameValue,
-      // username: usernameValue,
       email: emailValue,
-      // password: passwordValue,
-      // refCode: refCodeValue,
     },
   });
 
@@ -76,30 +62,6 @@ export default function UserSignUpForm() {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className="grid gap-2">
             <div className="grid gap-3">
-              {/* <FormField
-                control={form.control}
-                name="name"
-                render={({ field }: any) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input type="text" placeholder="Name" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="username"
-                render={({ field }: any) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input type="text" placeholder="Username" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
               <FormField
                 control={form.control}
                 name="email"
@@ -112,38 +74,6 @@ export default function UserSignUpForm() {
                   </FormItem>
                 )}
               />
-              {/* <FormField
-                control={form.control}
-                name="password"
-                render={({ field }: any) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Password"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="refCode"
-                render={({ field }: any) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        type="text"
-                        placeholder="Kode Referral (Jika ada)"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
             </div>
             <Button variant="outline" type="submit" className="my-1">
               Daftar

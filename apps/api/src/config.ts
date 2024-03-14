@@ -1,7 +1,6 @@
 import { config } from 'dotenv';
 import { resolve } from 'path';
 import { google } from 'googleapis';
-import { v2 as cloudinary } from 'cloudinary';
 
 export const NODE_ENV = process.env.NODE_ENV || 'development';
 
@@ -26,8 +25,5 @@ export const scopes = [
   'https://www.googleapis.com/auth/userinfo.profile',
 ];
 
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.CLOUD_API_KEY,
-  api_secret: process.env.CLOUD_SECRET_KEY,
-});
+
+

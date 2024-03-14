@@ -34,11 +34,33 @@ interface ProfileProps {
   sessionCookie?: string;
 }
 
-const profileFormSchema = z.object({
-  name: z.string().min(3, { message: 'Silakan masukkan nama anda' }),
-  username: z.string().min(3, { message: 'Silakan masukkan username anda' }),
-  phone: z.string().min(3, { message: 'Silakan masukkn nomor handphone anda' }),
-});
+const profileFormSchema = z
+  .object({
+    name: z
+      .string()
+      .min(4, { message: 'Minimal harus terdiri dari 4 karakter dan tidak ada angka' })
+      .optional(),
+    username: z
+      .string()
+      .min(4, { message: 'Minimal harus terdiri dari 4 karakter' })
+      .optional(),
+    phone: z
+      .string()
+      .min(6, { message: 'Minimal harus terdiri dari 6 angka' })
+      .optional(),
+  })
+  .refine(
+    (data) => {
+      return (
+        data.name !== undefined ||
+        data.username !== undefined ||
+        data.phone !== undefined
+      );
+    },
+    {
+      message: 'Setidaknya satu kolom harus diisi',
+    },
+  );
 
 export function ProfileForm(props: ProfileProps) {
   const router = useRouter();
@@ -56,8 +78,6 @@ export function ProfileForm(props: ProfileProps) {
     mode: 'onChange',
   });
 
-  
-
   const onSubmit = async (values: z.infer<typeof profileFormSchema>) => {
     try {
       const userToken = sessionCookie;
@@ -69,7 +89,7 @@ export function ProfileForm(props: ProfileProps) {
             withCredentials: true,
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': `Bearer ${userToken}`,
+              Authorization: `Bearer ${userToken}`,
             },
           },
         )
@@ -78,6 +98,7 @@ export function ProfileForm(props: ProfileProps) {
 
       console.log(response);
       if (response.success === true) {
+        router.push('/profile');
         router.refresh();
       }
     } catch (error) {
@@ -86,7 +107,7 @@ export function ProfileForm(props: ProfileProps) {
   };
 
   return (
-    <Card className='p-4'>
+    <Card className="p-4">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
@@ -96,7 +117,11 @@ export function ProfileForm(props: ProfileProps) {
               <FormItem>
                 <FormLabel>Nama</FormLabel>
                 <FormControl>
-                  <Input placeholder={sessionData?.name} {...field} />
+                  <Input
+                    pattern="[A-Za-z ]+"
+                    placeholder={sessionData?.name}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -109,7 +134,11 @@ export function ProfileForm(props: ProfileProps) {
               <FormItem>
                 <FormLabel>Username</FormLabel>
                 <FormControl>
-                  <Input placeholder={sessionData?.username} {...field} />
+                  <Input
+                    pattern="[a-z0-9]+"
+                    placeholder={sessionData?.username}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -122,7 +151,11 @@ export function ProfileForm(props: ProfileProps) {
               <FormItem>
                 <FormLabel>No. Handphone</FormLabel>
                 <FormControl>
-                  <Input placeholder={sessionData?.phone} {...field} />
+                  <Input
+                    type="number"
+                    placeholder={sessionData?.phone}
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

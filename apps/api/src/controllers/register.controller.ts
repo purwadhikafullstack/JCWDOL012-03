@@ -76,14 +76,9 @@ export const userVerification = async (req: Request, res: Response) => {
   try {
     const { name, username, password, refCode } =
       req.body as verificationPayload;
-      
       const token = req.headers.authorization?.split(' ')[1];
-      console.log(token);
-
       const tokenEmail = getEmailFromToken(token as string);
-      
       const hashedPassword = hash(password);
-
       // const referral = generateReferral(username);
 
     if (!refCode) {
