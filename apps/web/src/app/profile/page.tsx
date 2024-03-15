@@ -1,6 +1,5 @@
 import { AvatarForm } from '@/components/profile/AvatarForm';
 import { EmailForm } from '@/components/profile/EmailForm';
-import { PasswordForm } from '@/components/profile/PasswordForm';
 import { ProfileForm } from '@/components/profile/ProfileForm';
 import { cookies } from 'next/headers';
 
@@ -14,7 +13,6 @@ const page = () => {
       <AvatarForm sessionCookie={sessionCookie} />
       <ProfileForm sessionCookie={sessionCookie} />
       <EmailForm sessionCookie={sessionCookie} />
-      <PasswordForm sessionCookie={sessionCookie} />
     </div>
   );
 };

@@ -1,40 +1,17 @@
-import { Request, Response, NextFunction } from 'express';
-import { verifyToken } from '../utils/jwt';
+import jwt, { JwtPayload } from 'jsonwebtoken';
 
-export default async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-) => {
-  const authToken = req.headers.authorization;
-
-  if (!authToken) {
-    return res.status(403).json({
-      code: 403,
-      message: 'Unauthorized: Token is missing',
-    });
-  }
-
-  const userToken = authToken.split(' ')[1];
+export function getEmailFromToken(token: string): string {
+  const secretKey = 'freshmart12345678901234567890123';
 
   try {
-    const decodedToken = verifyToken(userToken);
+    const decodedToken = jwt.verify(token, secretKey) as JwtPayload;
 
-    if (!decodedToken.isValid) {
-      return res.status(403).json({
-        code: 403,
-        message: 'Unauthorized: Invalid Token',
-      });
-    }
+    console.log('Decoded token:', decodedToken);
+    const email = decodedToken.email;
 
-    // Tambahkan properti 'user' ke dalam objek 'Request'
-    (req as any).user = decodedToken.data;
-
-    next();
+    return email;
   } catch (error) {
-    return res.status(500).json({
-      code: 500,
-      message: 'Internal Server Error',
-    });
+    console.error('Error verifying token:', error);
+    throw new Error('Invalid token');
   }
-};
+}

@@ -6,8 +6,10 @@ import { hash } from '@/utils/bcrypt';
 import ejs from 'ejs';
 import path from 'path';
 import sendMail from '../utils/sendMail';
-import generateVerificationLink from '@/utils/verificationLink';
+// import generateVerificationLink from '@/utils/verificationLink';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import { generateVerificationLink } from '@/utils/linkGenerator';
+import { getEmailFromToken } from '@/middleware/decodeToken.middleware';
 
 export interface registrationPayload {
   email: string;
@@ -76,10 +78,10 @@ export const userVerification = async (req: Request, res: Response) => {
   try {
     const { name, username, password, refCode } =
       req.body as verificationPayload;
-      const token = req.headers.authorization?.split(' ')[1];
-      const tokenEmail = getEmailFromToken(token as string);
-      const hashedPassword = hash(password);
-      // const referral = generateReferral(username);
+    const token = req.headers.authorization?.split(' ')[1];
+    const tokenEmail = getEmailFromToken(token as string);
+    const hashedPassword = hash(password);
+    // const referral = generateReferral(username);
 
     if (!refCode) {
       const createUser = await prisma.user.create({
@@ -111,18 +113,3 @@ export const userVerification = async (req: Request, res: Response) => {
   }
 };
 
-function getEmailFromToken(token: string): string {
-  const secretKey = 'freshmart12345678901234567890123';
-
-  try {
-    const decodedToken = jwt.verify(token, secretKey) as JwtPayload;
-
-    console.log('Decoded token:', decodedToken);
-    const email = decodedToken.email;
-
-    return email;
-  } catch (error) {
-    console.error('Error verifying token:', error);
-    throw new Error('Invalid token');
-  }
-}

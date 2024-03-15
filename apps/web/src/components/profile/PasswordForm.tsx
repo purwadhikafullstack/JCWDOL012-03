@@ -1,11 +1,9 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Link from 'next/link';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useFieldArray, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { getSessionClient } from '@/services/client';
 import {
@@ -18,53 +16,30 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { toast } from '@/components/ui/use-toast';
-import Image from 'next/image';
 import { Card } from '@/components/ui/card';
+import { useRouter } from 'next/navigation';
+import axios from 'axios';
 
-interface ProfileProps {
+interface PasswordProps {
   sessionCookie?: string;
 }
 
-const profileFormSchema = z.object({
-  avatar: z.string().optional(),
-  username: z
+const passwordFormSchema = z.object({
+  oldPassword: z
     .string()
-    .min(2, {
-      message: 'Username must be at least 2 characters.',
-    })
-    .max(30, {
-      message: 'Username must not be longer than 30 characters.',
-    }),
-  email: z
-    .string({
-      required_error: 'Please select an email to display.',
-    })
-    .email(),
-  bio: z.string().max(160).min(4),
-  urls: z
-    .array(
-      z.object({
-        value: z.string().url({ message: 'Please enter a valid URL.' }),
-      }),
-    )
-    .optional(),
+    .min(6, { message: 'Password minimal terdiri dari 6 karakter' }),
+  newPassword: z
+    .string()
+    .min(6, { message: 'Password minimal terdiri dari 6 karakter' }),
+  confirmPassword: z
+    .string()
+    .min(6, { message: 'Password minimal terdiri dari 6 karakter' }),
 });
 
-type ProfileFormValues = z.infer<typeof profileFormSchema>;
-
-export function PasswordForm(props: ProfileProps) {
+export function PasswordForm(props: PasswordProps) {
+  const router = useRouter();
   const { sessionCookie } = props;
   const [sessionData, setSessionData] = useState<any>({});
-  const [avatar, setAvatar] = useState<string | null>(null);
 
   useEffect(() => {
     getSessionClient(sessionCookie).then((data) => {
@@ -72,51 +47,77 @@ export function PasswordForm(props: ProfileProps) {
     });
   }, [sessionCookie]);
 
-  const form = useForm<ProfileFormValues>({
-    resolver: zodResolver(profileFormSchema),
+  const form = useForm<z.infer<typeof passwordFormSchema>>({
+    resolver: zodResolver(passwordFormSchema),
     mode: 'onChange',
   });
 
-  const { fields, append } = useFieldArray({
-    name: 'urls',
-    control: form.control,
-  });
+  const onSubmit = async (values: z.infer<typeof passwordFormSchema>) => {
+    try {
+      const userToken = sessionCookie;
+      const response = await axios
+        .put(
+          'http://localhost:8000/api/profile/update-password',
+          JSON.stringify(values),
+          {
+            withCredentials: true,
+            headers: {
+              'Content-Type': 'application/json',
+              Authorization: `Bearer ${userToken}`,
+            },
+          },
+        )
+        .then((res) => res.data)
+        .catch((err) => console.log(err));
 
-  const handleAvatarChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      // Handle the file, for example, you can use FileReader to display the image preview.
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setAvatar(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      console.log(response);
+      if (response.success === true) {
+        router.push('/profile');
+        router.refresh();
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
-  function onSubmit(data: ProfileFormValues) {
-    toast({
-      title: 'You submitted the following values:',
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
-  }
-
   return (
-    <Card className='p-4'>
+    <Card className="p-4">
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
-            name="username"
+            name="oldPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormLabel>Password Saat Ini</FormLabel>
                 <FormControl>
-                  <Input placeholder={sessionData?.name} {...field} />
+                  <Input type="password" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="newPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Password Baru</FormLabel>
+                <FormControl>
+                  <Input type="password" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="confirmPassword"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Konfirmasi Password Baru</FormLabel>
+                <FormControl>
+                  <Input type="password" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>

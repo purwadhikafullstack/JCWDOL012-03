@@ -3,10 +3,10 @@ import jwt, { JwtPayload } from 'jsonwebtoken';
 import { NextFunction, Request, Response } from 'express';
 import ErrorHandler from '@/utils/errorHandler';
 import prisma from '@/prisma';
-import generateUpdateEmailLink from '@/utils/updateEmailLink';
 import sendMail from '@/utils/sendMail';
 import ejs from 'ejs';
 import path from 'path';
+import { generateEmailLink } from '@/utils/linkGenerator';
 
 export interface changeEmailPayload {
   newEmail: string;
@@ -46,7 +46,7 @@ export const changeEmailUser = async (
       });
     }
 
-    const updateEmailLink = generateUpdateEmailLink(newEmail, userId);
+    const updateEmailLink = generateEmailLink(newEmail, userId);
     const data = { updateEmailLink, newEmail };
     const html = await ejs.renderFile(
       path.join(__dirname, '../../mails/change-mail.ejs'),
@@ -104,9 +104,7 @@ export const updateEmailUser = async (
       code: 200,
       success: true,
       message: `Update Email berhasil`,
-      data: {
-        ...updateEmail,
-      },
+      data: updateEmail,
     });
   } catch (error: any) {
     return next(new ErrorHandler(error.message, 400));

@@ -11,8 +11,7 @@ import { google } from 'googleapis';
 import ejs from 'ejs';
 import path from 'path';
 import sendMail from '../utils/sendMail';
-import generateActivationLink from '@/utils/verificationLink';
-
+// import generateActivationLink from '@/utils/linkGenerator';
 
 export interface signinPayload {
   email: string;
@@ -161,7 +160,6 @@ export const socialAuthCallback = async (req: Request, res: Response) => {
     });
   }
 };
-
 
 export const getSessionUser = async (req: Request, res: Response) => {
   try {

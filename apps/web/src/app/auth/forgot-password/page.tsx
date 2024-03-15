@@ -2,9 +2,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
-import UserSignUpForm from '@/components/auth/SignUpForm';
+import ForgotPasswordForm from '@/components/auth/ForgotPasswordForm';
 
-export default function AuthenticationPage() {
+export default function SignInPage() {
   return (
     <>
       <div className="md:hidden">
@@ -28,33 +28,33 @@ export default function AuthenticationPage() {
           href="/"
           className={cn(
             buttonVariants({ variant: 'outline' }),
-            'absolute left-4 top-4 md:left-8 md:top-8',
+            'absolute right-4 top-4 md:right-8 md:top-8',
           )}
         >
           Kembali ke halaman utama
         </Link>
-        <div className="lg:p-8">
-          <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
-            <div className="flex flex-col space-y-2 text-center">
-              <h1 className="text-2xl font-semibold tracking-tight">
-                Selamat datang di FreshMart
-              </h1>
-              <p className="text-sm text-muted-foreground">
-                Silakan masukkan email anda untuk registrasi
-              </p>
-            </div>
-            <UserSignUpForm />
-          </div>
-        </div>
         <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
           <div className="absolute inset-0 bg-zinc-900" />
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">
               <p className="text-lg">
-                &ldquo;FreshMart selalu mempersiapkan bahan makanan dengan
-                kualitas terbaik bagi kebutuhan anda&rdquo;
+                &ldquo;Berbelanja bahan makanan sehari-hari di FreshMart adalah
+                pilihan terbaik&rdquo;
               </p>
             </blockquote>
+          </div>
+        </div>
+        <div className="lg:p-8">
+          <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+            <div className="flex flex-col space-y-2 text-center">
+              <h1 className="text-2xl font-semibold tracking-tight">
+              Reset Password
+              </h1>
+              <p className="text-sm text-muted-foreground">
+              Masukkan email akun anda
+              </p>
+            </div>
+            <ForgotPasswordForm/>
           </div>
         </div>
       </div>

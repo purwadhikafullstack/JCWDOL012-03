@@ -2,9 +2,9 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
-import UserSignInForm from '@/components/auth/SignInForm';
+import ResetPasswordForm from '@/components/auth/ResetPasswordForm';
 
-export default function AuthenticationPage() {
+export default function SignInPage() {
   return (
     <>
       <div className="md:hidden">
@@ -48,13 +48,13 @@ export default function AuthenticationPage() {
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
               <h1 className="text-2xl font-semibold tracking-tight">
-                Selamat datang di FreshMart
+                Reset Password
               </h1>
               <p className="text-sm text-muted-foreground">
-                Masukkan email dan password anda untuk Login
+                Masukkan email akun anda
               </p>
             </div>
-            <UserSignInForm />
+            <ResetPasswordForm/>
           </div>
         </div>
       </div>

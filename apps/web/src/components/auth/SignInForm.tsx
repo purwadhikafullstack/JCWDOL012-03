@@ -127,7 +127,7 @@ export default function UserSignInForm() {
         <div className="relative flex justify-center text-xs">
           <span className="bg-background px-2 text-muted-foreground">
             Lupa password anda?
-            <Link href="/auth/signin"> Klik disini</Link>
+            <Link href="/auth/forgot-password"> Klik disini</Link>
           </span>
         </div>
       </div>
