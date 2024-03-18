@@ -1,4 +1,4 @@
-import { ProfileForm } from "@/components/profile/ProfileForm"
+import { AddressForm } from "@/components/profile/address/AddressForm";
 import { cookies } from 'next/headers';
 
 
@@ -9,7 +9,7 @@ const page = () => {
       <div>
         <h3 className="text-lg font-medium">Profile</h3>
       </div>
-      <ProfileForm sessionCookie={sessionCookie}/>
+      <AddressForm sessionCookie={sessionCookie}/>
     </div>
   )
 }

@@ -171,7 +171,16 @@ export const getSessionUser = async (req: Request, res: Response) => {
         id: parsedId,
       },
       include: {
-        // Nanti diisi
+        addresses: {
+          select: {
+            id: true,
+            street: true,
+            city: true,
+            province: true,
+            zipCode: true,
+            isPrimary: true,
+          },
+        },
       },
     });
 

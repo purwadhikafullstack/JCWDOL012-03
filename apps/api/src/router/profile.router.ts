@@ -12,6 +12,9 @@ import { updateProfileUser } from '@/controllers/profile/updateInfo.controller';
 import { changeEmailUser, updateEmailUser } from '@/controllers/profile/updateEmail.controller';
 import { updateAvatarUser } from '@/controllers/profile/updateAvatar.controller';
 import { updatePasswordUser } from '@/controllers/profile/updatePassword.controller';
+import { createAddress } from '@/controllers//profile/address/createAddress.controller';
+import { updateAddress } from '@/controllers/profile/address/updateAddress.controller';
+import { deleteAddress } from '@/controllers/profile/address/deleteAddress.controller';
 
 const profileRouter: Router = Router();
 
@@ -20,7 +23,9 @@ profileRouter.put('/update-info', authenticationMiddleware, updateProfileUser);
 profileRouter.post('/change-email', changeEmailUser);
 profileRouter.put('/update-email', updateEmailUser);
 profileRouter.put('/update-password', updatePasswordUser);
-// profileRouter.post('/address', sss);
+profileRouter.post('/create-address', createAddress);
+profileRouter.put('/update-address', updateAddress);
+profileRouter.delete('/delete-address/:id', deleteAddress);
 
 
 export default profileRouter;
