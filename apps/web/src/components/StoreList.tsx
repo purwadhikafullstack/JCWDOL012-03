@@ -59,7 +59,7 @@ function StoreList() {
           {getData.map((items) => (
             <GridItem key={items.id} w={'100%'}>
               <Card
-                maxW={'xs'}
+                maxW={'sm'}
                 borderRadius={'lg'}
                 border={'2px'}
                 borderColor={'#4CAF50'}

@@ -21,6 +21,7 @@ const CreateStoreAdmin = () => {
   } | null>(null);
   const [formData, setFormData] = useState({
     name: '',
+    username: '',
     email: '',
     password: '',
     phone: '',
@@ -55,6 +56,7 @@ const CreateStoreAdmin = () => {
   const resetForm = () => {
     setFormData({
       name: '',
+      username: '',
       email: '',
       password: '',
       phone: '',
@@ -114,6 +116,14 @@ const CreateStoreAdmin = () => {
               error={errors.name}
               onChange={handleChange}
               placeholder="Enter your name"
+            />
+            <StoreAdminFormInput
+              label="Username"
+              name="username"
+              value={formData.username}
+              error={errors.username}
+              onChange={handleChange}
+              placeholder="Enter your username"
             />
             <StoreAdminFormInput
               label="Email"
