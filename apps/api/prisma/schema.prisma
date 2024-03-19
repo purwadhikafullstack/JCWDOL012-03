@@ -70,18 +70,28 @@ model StoreAdmin {
 }
 
 model Product {
-  id          Int         @id @default(autoincrement())
-  name        String
-  image       Image[]
-  description String
-  price       Float
-  stock       Int
-  storeId     Int
-  store       Store       @relation(fields: [storeId], references: [id])
-  categories  Category[]
-  discount    Discount[]
-  cart        Cart[]
-  orderItem   OrderItem[]
+  id           Int            @id @default(autoincrement())
+  name         String
+  image        Image[]
+  description  String
+  price        Float
+  stock        Int
+  storeId      Int
+  store        Store          @relation(fields: [storeId], references: [id])
+  categories   Category[]
+  discount     Discount[]
+  cart         Cart[]
+  orderItem    OrderItem[]
+  StockJournal StockJournal[]
+}
+
+model StockJournal {
+  id             Int     @id @default(autoincrement())
+  product        Product @relation(fields: [productId], references: [id])
+  productId      Int
+  quantityBefore Int
+  quantityAfter  Int
+  type           String
 }
 
 model Image {
