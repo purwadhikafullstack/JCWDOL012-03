@@ -30,6 +30,7 @@ app.use(cookieParser());
 app.use(cors({ origin: ['http://localhost:3000'], credentials: true }));
 app.use(urlencoded({ extended: true }));
 app.use('/api', apiRouter);
+app.use('/public', express.static('./public'));
 
 app.listen(PORT, () => {
   console.log(`  ➜  [API] Local:   http://localhost:${PORT}/`);
