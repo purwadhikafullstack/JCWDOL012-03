@@ -178,6 +178,7 @@ export const getSessionUser = async (req: Request, res: Response) => {
             city: true,
             province: true,
             zipCode: true,
+            notes: true,
             isPrimary: true,
           },
         },

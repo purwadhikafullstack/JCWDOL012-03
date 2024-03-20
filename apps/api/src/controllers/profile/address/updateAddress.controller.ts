@@ -8,6 +8,7 @@ interface UpdateAddressPayload {
   city?: string;
   province?: string;
   zipCode?: string;
+  notes?: string;
   isPrimary?: boolean;
 }
 
@@ -18,17 +19,17 @@ export const updateAddress = async (
 ) => {
   try {
     const {
-      id,
       street,
       city,
       province,
       zipCode,
+      notes,
       isPrimary,
     }: UpdateAddressPayload = req.body;
 
-    // Pastikan alamat dengan id yang diberikan ada
+    const { id } = req.params;
     const existingAddress = await prisma.address.findUnique({
-      where: { id },
+      where: { id: Number(id) },
     });
 
     if (!existingAddress) {
@@ -41,13 +42,15 @@ export const updateAddress = async (
 
     // Update alamat
     const updatedAddress = await prisma.address.update({
-      where: { id },
+      where: { id: Number(id) },
       data: {
         street: street || existingAddress.street,
         city: city || existingAddress.city,
         province: province || existingAddress.province,
         zipCode: zipCode || existingAddress.zipCode,
-        isPrimary: isPrimary !== undefined ? isPrimary : existingAddress.isPrimary,
+        notes: notes || existingAddress.notes,
+        isPrimary:
+          isPrimary !== undefined ? isPrimary : existingAddress.isPrimary,
       },
     });
 

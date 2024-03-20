@@ -30,6 +30,7 @@ export const createAddress = async (
       notes,
       isPrimary,
     }: CreateAddressPayload = req.body;
+    console.log(isPrimary)
 
     const getCookies = req.cookies['user-token'];
     const cookiesToDecode = jwtDecode<jwtPayload>(getCookies);
@@ -49,6 +50,29 @@ export const createAddress = async (
       });
     }
 
+    let newIsPrimary = isPrimary; // Default isPrimary value from request body
+
+    // Find existing addresses for the user
+    const userAddresses = await prisma.address.findMany({
+      where: {
+        userId: parsedId,
+      },
+    });
+
+    // If there are no existing addresses, set isPrimary to true for the new address
+    if (userAddresses.length === 0) {
+      newIsPrimary = true;
+    } else if (newIsPrimary) {
+      // If the new address is marked as primary, set isPrimary to false for all other addresses
+      const updatePromises = userAddresses.map((address) => {
+        return prisma.address.update({
+          where: { id: address.id },
+          data: { isPrimary: false },
+        });
+      });
+      await Promise.all(updatePromises);
+    }
+
     const newAddress = await prisma.address.create({
       data: {
         userId: parsedId,
@@ -57,7 +81,7 @@ export const createAddress = async (
         province,
         zipCode,
         notes,
-        isPrimary,
+        isPrimary: newIsPrimary,
       },
     });
 

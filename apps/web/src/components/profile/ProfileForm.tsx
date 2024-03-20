@@ -38,7 +38,9 @@ const profileFormSchema = z
   .object({
     name: z
       .string()
-      .min(4, { message: 'Minimal harus terdiri dari 4 karakter dan tidak ada angka' })
+      .min(4, {
+        message: 'Minimal harus terdiri dari 4 karakter dan tidak ada angka',
+      })
       .optional(),
     username: z
       .string()

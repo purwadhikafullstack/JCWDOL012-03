@@ -2,23 +2,28 @@ import React from 'react';
 import { SidebarNav } from '@/components/profile/Sidebar';
 import Header from '@/components/header/Header';
 import { cookies } from 'next/headers';
+import { HomeIcon, IdCardIcon, LockClosedIcon, PersonIcon } from '@radix-ui/react-icons';
 
 const sidebarNavItems = [
   {
     title: 'Profile',
     href: '/profile',
+    icon: <PersonIcon />,
   },
   {
     title: 'Alamat Pengiriman',
     href: '/profile/address',
+    icon: <HomeIcon />,
   },
   {
     title: 'Voucher',
     href: '/profile/voucher',
+    icon: <IdCardIcon />,
   },
   {
     title: 'Ganti Password',
     href: '/profile/password',
+    icon: <LockClosedIcon />,
   }
 ];
 

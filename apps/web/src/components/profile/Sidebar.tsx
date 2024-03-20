@@ -7,12 +7,14 @@ import { cn } from '@/lib/utils';
 import { Button, buttonVariants } from '@/components/ui/button';
 import { Card, CardHeader } from '../ui/card';
 import { getSessionClient } from '@/services/client';
+import { PersonIcon } from '@radix-ui/react-icons';
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   sessionCookie?: string;
   items: {
     href: string;
     title: string;
+    icon: JSX.Element;
   }[];
 }
 
@@ -72,7 +74,10 @@ export function SidebarNav({
 
             )}
           >
-            {item.title}
+             <span className="flex items-center">
+              {item.icon}
+              <span className="ml-2">{item.title}</span>
+            </span>
           </Link>
         ))}
       </nav>

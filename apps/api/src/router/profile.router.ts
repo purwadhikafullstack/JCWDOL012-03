@@ -15,6 +15,7 @@ import { updatePasswordUser } from '@/controllers/profile/updatePassword.control
 import { createAddress } from '@/controllers//profile/address/createAddress.controller';
 import { updateAddress } from '@/controllers/profile/address/updateAddress.controller';
 import { deleteAddress } from '@/controllers/profile/address/deleteAddress.controller';
+import { defaultAddress } from '@/controllers/profile/address/defaultAddress.controller';
 
 const profileRouter: Router = Router();
 
@@ -24,7 +25,8 @@ profileRouter.post('/change-email', changeEmailUser);
 profileRouter.put('/update-email', updateEmailUser);
 profileRouter.put('/update-password', updatePasswordUser);
 profileRouter.post('/create-address', createAddress);
-profileRouter.put('/update-address', updateAddress);
+profileRouter.put('/update-address/:id', updateAddress);
+profileRouter.put('/default-address/:id', defaultAddress);
 profileRouter.delete('/delete-address/:id', deleteAddress);
 
 
