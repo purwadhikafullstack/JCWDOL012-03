@@ -1,10 +1,3 @@
-import {
-  getSessionUser,
-  signinUser,
-  signoutUser,
-  socialAuth,
-  socialAuthCallback,
-} from '@/controllers/auth.controller';
 import upload from '@/middleware/storage.middleware';
 import { Router } from 'express';
 import authenticationMiddleware from '@/middleware/auth.middleware';

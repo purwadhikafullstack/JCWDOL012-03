@@ -20,13 +20,13 @@ export const defaultAddress = async (
     const addressId = parseInt(id, 10);
     console.log(addressId);
 
-    // Get all addresses of the user
     const userAddresses = await prisma.address.findMany({
       where: { userId: parsedId },
     });
 
-    // Find the address with the provided addressId
-    const targetAddress = userAddresses.find(address => address.id === addressId);
+    const targetAddress = userAddresses.find(
+      (address) => address.id === addressId,
+    );
 
     if (!targetAddress) {
       return res.status(404).json({
@@ -36,7 +36,6 @@ export const defaultAddress = async (
       });
     }
 
-    // Set isPrimary to false for all addresses except the target address
     const updatePromises = userAddresses.map((address) => {
       if (address.id === addressId) {
         return prisma.address.update({

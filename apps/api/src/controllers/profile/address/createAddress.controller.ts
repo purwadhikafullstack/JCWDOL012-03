@@ -50,20 +50,18 @@ export const createAddress = async (
       });
     }
 
-    let newIsPrimary = isPrimary; // Default isPrimary value from request body
+    let newIsPrimary = isPrimary;
 
-    // Find existing addresses for the user
     const userAddresses = await prisma.address.findMany({
       where: {
         userId: parsedId,
       },
     });
 
-    // If there are no existing addresses, set isPrimary to true for the new address
+
     if (userAddresses.length === 0) {
       newIsPrimary = true;
     } else if (newIsPrimary) {
-      // If the new address is marked as primary, set isPrimary to false for all other addresses
       const updatePromises = userAddresses.map((address) => {
         return prisma.address.update({
           where: { id: address.id },

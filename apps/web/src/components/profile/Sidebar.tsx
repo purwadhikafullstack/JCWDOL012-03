@@ -5,22 +5,68 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
 import { Button, buttonVariants } from '@/components/ui/button';
-import { Card, CardHeader } from '../ui/card';
+import { Card, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { getSessionClient } from '@/services/client';
-import { PersonIcon } from '@radix-ui/react-icons';
+import {
+  HomeIcon,
+  IdCardIcon,
+  LockClosedIcon,
+  DoubleArrowRightIcon,
+  PersonIcon,
+} from '@radix-ui/react-icons';
+
+const sidebarNavUser = [
+  {
+    title: 'Profile',
+    href: '/profile',
+    icon: <PersonIcon />,
+  },
+  {
+    title: 'Alamat Pengiriman',
+    href: '/profile/address',
+    icon: <HomeIcon />,
+  },
+  {
+    title: 'Voucher',
+    href: '/profile/voucher',
+    icon: <IdCardIcon />,
+  },
+  {
+    title: 'Ganti Password',
+    href: '/profile/password',
+    icon: <LockClosedIcon />,
+  },
+];
+
+const sidebarNavAdmin = [
+  {
+    title: 'Daftar Toko',
+    href: '/profile/admin/store-list',
+    icon: <HomeIcon />,
+  },
+  {
+    title: 'Daftar Store Admin',
+    href: '/profile/admin/store-admin-list',
+    icon: <PersonIcon />,
+  },
+  {
+    title: 'Buat Toko',
+    href: '/profile/admin/create-store',
+    icon: <HomeIcon />,
+  },
+  {
+    title: 'Buat Akun Admin',
+    href: '/profile/admin/create-admin-account',
+    icon: <PersonIcon />,
+  },
+];
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   sessionCookie?: string;
-  items: {
-    href: string;
-    title: string;
-    icon: JSX.Element;
-  }[];
 }
 
 export function SidebarNav({
   className,
-  items,
   sessionCookie,
   ...props
 }: SidebarNavProps) {
@@ -36,7 +82,10 @@ export function SidebarNav({
 
   const handleOpenSidebar = () => {
     setIsOpen(!isOpen);
+    console.log(sessionData.role);
   };
+
+  const isSuperAdmin = sessionData.role === 'superadmin';
 
   return (
     <div
@@ -51,35 +100,61 @@ export function SidebarNav({
           isOpen ? '' : '-right-12'
         }`}
       >
-        O
+        <DoubleArrowRightIcon />
       </Button>
 
       <nav
-        className={cn(
-          'flex flex-col lg:space-y-1 pt-3',
-          className,
-        )}
+        className={cn('flex flex-col lg:space-y-1 pt-3', className)}
         {...props}
       >
-        {items.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={cn(
-              buttonVariants({ variant: 'ghost' }),
-              pathname === item.href
-                ? 'bg-muted hover:bg-muted'
-                : 'hover:bg-transparent hover:underline',
-              'justify-start',
-
-            )}
-          >
-             <span className="flex items-center">
-              {item.icon}
-              <span className="ml-2">{item.title}</span>
-            </span>
-          </Link>
-        ))}
+        <CardTitle className="ml-4 mb-2">Info Pengguna</CardTitle>
+        <div className="flex flex-col pb-8">
+          {sidebarNavUser.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={cn(
+                buttonVariants({ variant: 'ghost' }),
+                pathname === item.href
+                  ? 'bg-muted hover:bg-muted'
+                  : 'hover:bg-transparent hover:underline',
+                'justify-start',
+              )}
+            >
+              <span className="flex items-center">
+                {item.icon}
+                <span className="ml-2">{item.title}</span>
+              </span>
+            </Link>
+          ))}
+        </div>
+        {isSuperAdmin && (
+          <>
+            <CardTitle className="ml-4 mb-2 pb-2">
+              Info Admin
+            </CardTitle>
+            <div className="flex flex-col pb-4">
+              {sidebarNavAdmin.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={cn(
+                    buttonVariants({ variant: 'ghost' }),
+                    pathname === item.href
+                      ? 'bg-muted hover:bg-muted'
+                      : 'hover:bg-transparent hover:underline',
+                    'justify-start',
+                  )}
+                >
+                  <span className="flex items-center">
+                    {item.icon}
+                    <span className="ml-2">{item.title}</span>
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </>
+        )}
       </nav>
     </div>
   );

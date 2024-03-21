@@ -37,7 +37,7 @@ export default function UserSignUpForm() {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await axios
-        .post('http://localhost:8000/api/auth/signup', JSON.stringify(values), {
+        .post('http://localhost:8000/api/register/email', JSON.stringify(values), {
           withCredentials: true,
           headers: {
             'Content-Type': 'application/json',

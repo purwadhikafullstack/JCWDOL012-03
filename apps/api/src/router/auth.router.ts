@@ -14,6 +14,7 @@ const authRouter: Router = Router();
 
 authRouter.post('/login', signinUser);
 authRouter.post('/logout', signoutUser);
+authRouter.post('/logout', signoutUser);
 authRouter.post('/reset-password', resetPassword);
 authRouter.post('/change-password', changePassword);
 authRouter.get('/google', socialAuth);
