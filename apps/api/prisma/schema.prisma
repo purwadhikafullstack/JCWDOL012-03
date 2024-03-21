@@ -148,16 +148,19 @@ model ReferralCode {
 }
 
 model Discount {
-  id            Int      @id @default(autoincrement())
-  productId     Int
-  product       Product  @relation(fields: [productId], references: [id])
-  discountName  String
-  discountType  String // Contoh: 'percentage', 'fixed'
-  discountValue Float
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  usage         Boolean //false: belum dipakai
-  status        Boolean //true: aktir, false: non-aktif (didelete)
+  id                Int      @id @default(autoincrement())
+  productId         Int?
+  product           Product? @relation(fields: [productId], references: [id])
+  discountName      String
+  discountType      String // Contoh: 'percentage', 'fixed', 'bogo'
+  discountValue     Float
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  usage             Boolean //false: belum dipakai
+  status            Boolean //true: aktir, false: non-aktif (didelete)
+  maxDiscountValue  Int?
+  minPurchaseAmount Int?
+  limit             Int?
 }
 
 model Voucher {
