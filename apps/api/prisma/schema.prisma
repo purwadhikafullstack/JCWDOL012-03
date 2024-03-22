@@ -148,8 +148,8 @@ model Voucher {
   code          String   @unique
   discountType  String // Contoh: 'percentage', 'fixed'
   discountValue Float
-  expiredDate  DateTime
-  usageType    String   // Contoh: 'product', 'totalPurchase', 'shipping'
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @updatedAt
+  expiredDate   DateTime
+  usageType     String // Contoh: 'product', 'totalPurchase', 'shipping'
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
 }
