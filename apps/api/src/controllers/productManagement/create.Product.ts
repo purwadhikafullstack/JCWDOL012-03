@@ -10,7 +10,7 @@ export interface jwtPayload {
 const createProduct = async (req: Request, res: Response) => {
   try {
     const { name, description, price, stock, storeId, categoryId } = req.body;
-    const imagesUrl = req.file ? req.file.path : ''; // Mengambil gambar dari hasil middleware
+    const imagesUrl = req.file?.path; // Mengambil gambar dari hasil middleware
 
     // const getCookies = req.cookies['user-token'];
     // const cookiesToDecode = jwtDecode<jwtPayload>(getCookies);
@@ -43,6 +43,7 @@ const createProduct = async (req: Request, res: Response) => {
 
     const product = await prisma.product.create({
       data: {
+        status: true,
         description,
         price: parseFloat(price),
         stock: parseInt(stock),
@@ -50,7 +51,7 @@ const createProduct = async (req: Request, res: Response) => {
         image: {
           createMany: {
             data: {
-              url: imagesUrl,
+              url: imagesUrl || '',
             },
           },
         },
@@ -69,6 +70,7 @@ const createProduct = async (req: Request, res: Response) => {
       code: 200,
       message: 'Product successfully created',
       data: product,
+      another: req.file,
     });
   } catch (error) {
     console.error('Error creating product:', error);

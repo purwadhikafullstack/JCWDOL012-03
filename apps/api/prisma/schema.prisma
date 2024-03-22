@@ -82,6 +82,7 @@ model Product {
   discount    Discount[]
   cart        Cart[]
   orderItem   OrderItem[]
+  status      Boolean
 }
 
 model Image {
