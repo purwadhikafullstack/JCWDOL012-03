@@ -2,9 +2,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
+<<<<<<< HEAD
 import VerificationForm from '@/components/auth/VerificationForm';
 
 export default function VerificationPage() {
+=======
+import VerificationForm from '@/components/form/VerificationForm';
+
+export default function AuthenticationPage() {
+>>>>>>> adb62195e206f27bd7b7bd45023f2bbd77c803f1
   return (
     <>
       <div className="md:hidden">

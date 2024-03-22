@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -5,6 +6,15 @@ import { buttonVariants } from '@/components/ui/button';
 import ResetPasswordForm from '@/components/auth/ResetPasswordForm';
 
 export default function SignInPage() {
+=======
+import Image from "next/image"
+import Link from "next/link"
+import { cn } from "@/lib/utils"
+import { buttonVariants } from "@/components/ui/button"
+import UserSignInForm from "@/components/form/SignInForm"
+
+export default function AuthenticationPage() {
+>>>>>>> adb62195e206f27bd7b7bd45023f2bbd77c803f1
   return (
     <>
       <div className="md:hidden">
@@ -27,8 +37,13 @@ export default function SignInPage() {
         <Link
           href="/"
           className={cn(
+<<<<<<< HEAD
             buttonVariants({ variant: 'outline' }),
             'absolute right-4 top-4 md:right-8 md:top-8',
+=======
+            buttonVariants({ variant: "outline" }),
+            "absolute right-4 top-4 md:right-8 md:top-8"
+>>>>>>> adb62195e206f27bd7b7bd45023f2bbd77c803f1
           )}
         >
           Kembali ke halaman utama
@@ -38,8 +53,12 @@ export default function SignInPage() {
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">
               <p className="text-lg">
+<<<<<<< HEAD
                 &ldquo;Berbelanja bahan makanan sehari-hari di FreshMart adalah
                 pilihan terbaik&rdquo;
+=======
+                &ldquo;Berbelanja bahan makanan sehari-hari di FreshMart adalah pilihan terbaik&rdquo;
+>>>>>>> adb62195e206f27bd7b7bd45023f2bbd77c803f1
               </p>
             </blockquote>
           </div>
@@ -48,6 +67,7 @@ export default function SignInPage() {
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">
               <h1 className="text-2xl font-semibold tracking-tight">
+<<<<<<< HEAD
                 Reset Password
               </h1>
               <p className="text-sm text-muted-foreground">
@@ -55,9 +75,23 @@ export default function SignInPage() {
               </p>
             </div>
             <ResetPasswordForm/>
+=======
+                Selamat datang di FreshMart
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                Masukkan email dan password anda untuk Login
+              </p>
+            </div>
+            <UserSignInForm />
+>>>>>>> adb62195e206f27bd7b7bd45023f2bbd77c803f1
           </div>
         </div>
       </div>
     </>
+<<<<<<< HEAD
   );
 }
+=======
+  )
+}
+>>>>>>> adb62195e206f27bd7b7bd45023f2bbd77c803f1

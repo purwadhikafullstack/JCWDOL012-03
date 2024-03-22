@@ -5,7 +5,10 @@ import Link from 'next/link';
 import Logo from '/public/logo.png';
 import Image from 'next/image';
 import axios from 'axios';
+<<<<<<< HEAD
 import avatarIcon from '../../../public/assets/avatar.png';
+=======
+>>>>>>> adb62195e206f27bd7b7bd45023f2bbd77c803f1
 import { useRouter, usePathname } from 'next/navigation';
 import { getSessionClient } from '@/services/client';
 import { Input } from '../ui/input';
@@ -104,7 +107,11 @@ export default function Header(props: HeaderProps) {
               <Button asChild variant="secondary">
                 <Link href="/cart" className="flex gap-1 items-center">
                   <ShoppingCart />
+<<<<<<< HEAD
                   <p className="md:block hidden">Keranjang</p>
+=======
+                  <p>Keranjang</p>
+>>>>>>> adb62195e206f27bd7b7bd45023f2bbd77c803f1
                 </Link>
               </Button>
             </NavigationMenuItem>
@@ -113,17 +120,30 @@ export default function Header(props: HeaderProps) {
                 <DropdownMenuTrigger asChild>
                   <Button variant="secondary" size="icon">
                     <Avatar>
+<<<<<<< HEAD
                       <AvatarImage src="../../../public/assets/avatar.png" />
                       <AvatarFallback>A</AvatarFallback>
+=======
+                      <AvatarImage src="https://github.com/shadcn.png" />
+                      <AvatarFallback>CN</AvatarFallback>
+>>>>>>> adb62195e206f27bd7b7bd45023f2bbd77c803f1
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
+<<<<<<< HEAD
                   className="w-56 md:mr-0 mr-2 bg-white transition-all"
                   sideOffset={6}
                 >
                   <DropdownMenuLabel>
                     <p>Halo, {sessionData?.name}!</p>
+=======
+                  className="w-56 md:mr-0 mr-2 bg-white"
+                  sideOffset={6}
+                >
+                  <DropdownMenuLabel>
+                    <p>{sessionData?.name}</p>
+>>>>>>> adb62195e206f27bd7b7bd45023f2bbd77c803f1
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
