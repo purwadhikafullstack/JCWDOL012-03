@@ -16,7 +16,6 @@ export interface SessionData {
 }
 
 export interface ProfileUser {
-<<<<<<< HEAD
   id: number;
   username: string;
   email: string;
@@ -88,65 +87,3 @@ export const getProfileUser = async (
     console.log(error);
   }
 };
-=======
-    id: number;
-    name: string;
-    username: string;
-    email: string;
-    password: string;
-    referral: string;
-    phone: string;
-    avatar: string;
-    role: string;
-    created_at: string;
-    updated_at: string;
-  }
-
-export const getSessionClient = async (
-    userToken: string | undefined,
-  ): Promise<ProfileUser | undefined> => {
-    try {
-      if (!userToken) {
-        return undefined;
-      } else {
-        const response = await axios
-          .get('http://localhost:8000/api/auth/session', {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${userToken}`,
-            },
-          })
-          .then((res) => res.data)
-          .catch((err) => console.log(err));
-  
-        return response.data;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  
-  export const getProfileUser = async (
-    userToken: string | undefined,
-  ): Promise<ProfileUser | undefined> => {
-    try {
-      if (!userToken) {
-        return undefined;
-      } else {
-        const response = await axios
-          .get('http://localhost:8000/api/user/data', {
-            headers: {
-              'Content-Type': 'application/json',
-              Authorization: `Bearer ${userToken}`,
-            },
-          })
-          .then((res) => res.data)
-          .catch((err) => console.log(err));
-  
-        return response.data;
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
->>>>>>> adb62195e206f27bd7b7bd45023f2bbd77c803f1
