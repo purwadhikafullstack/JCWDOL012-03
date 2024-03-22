@@ -1,6 +1,6 @@
 'use client';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import Header from '@/components/header/Header';
+import Footer from '@/components/footer/Footer';
 import { ArrowBackIcon } from '@chakra-ui/icons';
 import {
   Box,
@@ -122,7 +122,7 @@ function EditProductCategory({ params }: EditProductCategoryPayload) {
           colorScheme="red"
           onClick={handleBack}
         >
-          Back
+          Back w
         </Button>
       </VStack>
       <Footer />

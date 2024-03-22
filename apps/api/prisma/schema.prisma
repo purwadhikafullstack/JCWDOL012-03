@@ -11,23 +11,23 @@ datasource db {
 }
 
 model User {
-  id          Int      @id @default(autoincrement())
-  username    String
-  email       String   @unique
-  password    String
-  name        String
-  refCode     String?   
-  phone       String?
-  avatar      String?
-  addresses   Address[]
-  carts       Cart[]
-  orders      Order[]
-  voucher     Voucher[]
-  storeAdmin  StoreAdmin[]
-  referral    ReferralCode?
-  role        String   @default("user")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id         Int           @id @default(autoincrement())
+  email      String        @unique
+  username   String
+  password   String
+  name       String
+  refCode    String?
+  phone      String?
+  avatar     String?
+  addresses  Address[]
+  carts      Cart[]
+  orders     Order[]
+  voucher    Voucher[]
+  referral   ReferralCode?
+  role       String        @default("user")
+  createdAt  DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  StoreAdmin StoreAdmin?
 }
 
 model Address {
@@ -44,12 +44,12 @@ model Address {
 }
 
 model Store {
-  id        Int      @id @default(autoincrement())
-  name      String
-  location  Location[]
-  admins    StoreAdmin[]
-  products  Product[]
-  order     Order[]
+  id       Int          @id @default(autoincrement())
+  name     String
+  location Location[]
+  admins   StoreAdmin[]
+  products Product[]
+  order    Order[]
 }
 
 model Location {
@@ -73,7 +73,7 @@ model StoreAdmin {
 model Product {
   id          Int         @id @default(autoincrement())
   name        String
-  image       String
+  image       Image[]
   description String
   price       Float
   stock       Int
@@ -83,6 +83,14 @@ model Product {
   discount    Discount[]
   cart        Cart[]
   orderItem   OrderItem[]
+  status      Boolean
+}
+
+model Image {
+  id        Int      @id @default(autoincrement())
+  url       String
+  Product   Product? @relation(fields: [productId], references: [id])
+  productId Int?
 }
 
 model Category {

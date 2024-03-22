@@ -7,40 +7,43 @@ export interface jwtPayload {
   role: string;
 }
 
-export const getStoreList = async (req: Request, res: Response) => {
+const DeleteProduct = async (req: Request, res: Response) => {
   try {
-    //validasi superadmin
+    const { id } = req.params;
+
     // const getCookies = req.cookies['user-token'];
     // const cookiesToDecode = jwtDecode<jwtPayload>(getCookies);
 
-    // if (!cookiesToDecode) {
+    // if (!cookiesToDecode || cookiesToDecode.role !== 'superadmin') {
     //   return res.status(401).json({
     //     code: 401,
     //     message: "you're not authorized",
     //   });
     // }
 
-    const storeListData = await prisma.store.findMany({
-      include: {
-        location: true,
-        admins: {
-          include: {
-            user: true,
-          },
-        },
-        products: true,
+    await prisma.image.deleteMany({
+      where: {
+        productId: parseInt(id),
+      },
+    });
+
+    await prisma.product.delete({
+      where: {
+        id: parseInt(id),
       },
     });
 
     return res.status(200).json({
       code: 200,
-      message: 'data succesfully retrieved',
-      data: storeListData,
+      message: 'product successfully deleted',
     });
   } catch (error) {
+    console.error('Error creating product:', error);
     return res.status(500).json({
       code: 500,
-      message: 'internal server error',
+      message: 'Internal server error',
     });
   }
 };
+
+export default DeleteProduct;

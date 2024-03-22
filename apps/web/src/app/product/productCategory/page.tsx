@@ -1,6 +1,6 @@
 'use client';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import Header from '@/components/header/Header';
+import Footer from '@/components/footer/Footer';
 import React from 'react';
 import { Box, Button, Center, Text } from '@chakra-ui/react';
 import TableCategoryList from '@/components/tableCategoryList';

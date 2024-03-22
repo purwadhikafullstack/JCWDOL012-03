@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import {
   Card,
@@ -7,15 +8,18 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import {
-  Button,
-} from '@/components/ui/button';
+import { Button } from '@/components/ui/button';
+import { useRouter } from 'next/navigation';
 
 const ProductList = () => {
+  const router = useRouter();
+  const handleNext = () => {
+    router.push('/product');
+  };
   return (
     <div>
       <Card className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-5 mb-5">
-          <h1>Kategori pilihan</h1>
+        <h1>Kategori pilihan</h1>
         <Card>
           <CardHeader>
             <CardTitle>Card Title</CardTitle>
@@ -54,7 +58,7 @@ const ProductList = () => {
         </Card>
       </Card>
       <Card className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-5 mb-5">
-          <h1>Produk yang sering dicari</h1>
+        <h1>Produk yang sering dicari</h1>
         <Card>
           <CardHeader>
             <CardTitle>Card Title</CardTitle>
@@ -92,10 +96,10 @@ const ProductList = () => {
           </CardFooter>
         </Card>
       </Card>
-      <Button variant="outline">Semua Produk</Button>
+      <Button variant="outline" onClick={handleNext}>
+        Semua Produk
+      </Button>
     </div>
-    
-    
   );
 };
 

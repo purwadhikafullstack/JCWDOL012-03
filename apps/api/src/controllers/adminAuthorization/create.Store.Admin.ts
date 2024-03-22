@@ -11,7 +11,7 @@ export interface jwtPayload {
 
 export const CreateStoreAdmin = async (req: Request, res: Response) => {
   try {
-    const { name, email, password, phone, storeId } = req.body;
+    const { name, username, email, password, phone, storeId } = req.body;
 
     //cek role dari cookies
     //validasi superadmin
@@ -53,6 +53,7 @@ export const CreateStoreAdmin = async (req: Request, res: Response) => {
     const user = await prisma.user.create({
       data: {
         email,
+        username,
         name,
         password,
         refCode: referral,
