@@ -31,7 +31,7 @@ export default async (req: Request, res: Response, next: NextFunction) => {
   const { id, username, email, role } = verifyTokenResult.data;
 
   const isStoreAdmin = role === 'storeAdmin';
-  // const isSuperAdmin = role === 'superAdmin';
+  const isSuperAdmin = role === 'superAdmin';
 
   req.body = { id, username, email, role, authToken, ...req.body };
 
