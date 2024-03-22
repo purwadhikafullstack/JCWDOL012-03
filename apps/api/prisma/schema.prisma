@@ -11,22 +11,23 @@ datasource db {
 }
 
 model User {
-  id         Int           @id @default(autoincrement())
-  email      String        @unique
-  password   String
-  name       String
-  refCode    String?
-  phone      String?
-  avatar     String?
-  addresses  Address[]
-  carts      Cart[]
-  orders     Order[]
-  voucher    Voucher[]
-  referral   ReferralCode?
-  role       String        @default("user")
-  createdAt  DateTime      @default(now())
-  updatedAt  DateTime      @updatedAt
-  StoreAdmin StoreAdmin?
+  id          Int      @id @default(autoincrement())
+  username    String
+  email       String   @unique
+  password    String
+  name        String
+  refCode     String?   
+  phone       String?
+  avatar      String?
+  addresses   Address[]
+  carts       Cart[]
+  orders      Order[]
+  voucher     Voucher[]
+  storeAdmin  StoreAdmin[]
+  referral    ReferralCode?
+  role        String   @default("user")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Address {
@@ -37,17 +38,18 @@ model Address {
   city      String
   province  String
   zipCode   String
+  notes     String?
   location  Location[]
   isPrimary Boolean
 }
 
 model Store {
-  id       Int          @id @default(autoincrement())
-  name     String
-  location Location[]
-  admins   StoreAdmin[]
-  products Product[]
-  order    Order[]
+  id        Int      @id @default(autoincrement())
+  name      String
+  location  Location[]
+  admins    StoreAdmin[]
+  products  Product[]
+  order     Order[]
 }
 
 model Location {

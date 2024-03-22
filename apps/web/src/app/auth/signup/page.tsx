@@ -2,9 +2,15 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
+<<<<<<< HEAD
+import UserSignUpForm from '@/components/auth/SignUpForm';
+
+export default function SignUpPage() {
+=======
 import UserSignUpForm from '@/components/form/SignUpForm';
 
 export default function AuthenticationPage() {
+>>>>>>> adb62195e206f27bd7b7bd45023f2bbd77c803f1
   return (
     <>
       <div className="md:hidden">
