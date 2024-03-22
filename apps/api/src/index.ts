@@ -33,7 +33,7 @@ app.use('/api', apiRouter);
 app.use('/public', express.static('./public'));
 
 app.listen(PORT, () => {
-  console.log(`  ➜  [API] Local:   http://localhost:${PORT}/`);
+  console.log(`  ➜  [API] Local: http://localhost:${PORT}/`);
 });
 
 app.get('/test', (req: Request, res: Response, next: NextFunction) => {
