@@ -38,7 +38,6 @@ model Address {
   city      String
   province  String
   zipCode   String
-  notes     String?
   location  Location[]
   isPrimary Boolean
 }
