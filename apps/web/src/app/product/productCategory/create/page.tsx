@@ -1,6 +1,6 @@
 'use client';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
+import Header from '@/components/header/Header';
+import Footer from '@/components/footer/Footer';
 import {
   Box,
   Button,
@@ -78,36 +78,38 @@ function CreateProductCategory() {
   return (
     <>
       <Header />
-      <VStack spacing={4} mt={10}>
-        <Box px={10} py={5} bg={'#F9F9F9'} border="1px" borderRadius={'lg'}>
-          <Center>
-            <form onSubmit={handleSubmit}>
-              <FormControl my={4} id="name" isRequired>
-                <FormLabel>Name</FormLabel>
-                <Input
-                  type="text"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                />
-              </FormControl>
+      <Box h={'100vh'}>
+        <VStack spacing={4} mt={10}>
+          <Box px={10} py={5} bg={'#F9F9F9'} border="1px" borderRadius={'lg'}>
+            <Center>
+              <form onSubmit={handleSubmit}>
+                <FormControl my={4} id="name" isRequired>
+                  <FormLabel>Product Category</FormLabel>
+                  <Input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                  />
+                </FormControl>
 
-              <Center>
-                <Button mt={4} type="submit" colorScheme="teal">
-                  {isLoading ? 'loading...' : 'Submit'}
-                </Button>
-              </Center>
-            </form>
-          </Center>
-        </Box>
-        <Button
-          leftIcon={<ArrowBackIcon />}
-          colorScheme="red"
-          onClick={handleBack}
-        >
-          Back
-        </Button>
-      </VStack>
+                <Center>
+                  <Button mt={4} type="submit" colorScheme="teal">
+                    {isLoading ? 'loading...' : 'Submit'}
+                  </Button>
+                </Center>
+              </form>
+            </Center>
+          </Box>
+          <Button
+            leftIcon={<ArrowBackIcon />}
+            colorScheme="red"
+            onClick={handleBack}
+          >
+            Back
+          </Button>
+        </VStack>
+      </Box>
       <Footer />
       {toastProps && <CustomToast {...toastProps} />}
     </>

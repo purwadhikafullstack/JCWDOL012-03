@@ -11,15 +11,15 @@ export const GetStoreAdmin = async (req: Request, res: Response) => {
   try {
     //cek role dari cookies
     //validasi superadmin
-    const getCookies = req.cookies['user-token'];
-    const cookiesToDecode = jwtDecode<jwtPayload>(getCookies);
+    // const getCookies = req.cookies['user-token'];
+    // const cookiesToDecode = jwtDecode<jwtPayload>(getCookies);
 
-    if (!cookiesToDecode) {
-      return res.status(401).json({
-        code: 401,
-        message: "you're not authorized",
-      });
-    }
+    // if (!cookiesToDecode) {
+    //   return res.status(401).json({
+    //     code: 401,
+    //     message: "you're not authorized",
+    //   });
+    // }
 
     let { page = 1, limit = 5 } = req.query;
     page = typeof page === 'string' ? parseInt(page) : 1;

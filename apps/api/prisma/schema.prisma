@@ -83,6 +83,7 @@ model Product {
   cart         Cart[]
   orderItem    OrderItem[]
   StockJournal StockJournal[]
+  status      Boolean
 }
 
 model StockJournal {

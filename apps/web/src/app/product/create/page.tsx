@@ -87,6 +87,9 @@ const ProductForm = () => {
   const handleChange = (e: any) => {
     const { name, value, type, files } = e.target;
 
+
+    const updatedFormData = new FormData();
+
     // Jika input adalah file, tangani secara khusus
     if (type === 'file' && files && files.length === 1) {
       const image = files[0];
@@ -94,6 +97,9 @@ const ProductForm = () => {
         ...formData,
         image: image || '',
       });
+
+      updatedFormData.set(name, image);
+      console.log(image);
 
       if (files[0].size > 1048576) {
         return setSizeWarning(true);
@@ -103,6 +109,8 @@ const ProductForm = () => {
       // Buat URL preview untuk setiap gambar
       const imageUrl = URL.createObjectURL(image);
       setImagePreviews([imageUrl]);
+
+      updatedFormData.set(name, image);
     } else {
       // Tangani input teks atau select biasa
       setFormData({
@@ -112,12 +120,21 @@ const ProductForm = () => {
     }
   };
 
+
+  console.log(formData);
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
       const response = await axios.post(
         'http://localhost:9296/api/product/createProduct',
         formData,
+
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
       );
       if (response.data.code === 200) {
         setToastProps({
@@ -241,7 +258,8 @@ const ProductForm = () => {
               <FormLabel>Images</FormLabel>
               <Input
                 type="file"
-                name="images"
+
+                name="image"
                 onChange={handleChange}
                 accept="image/png, image/gif, image/jpeg, image/jpg"
                 required
