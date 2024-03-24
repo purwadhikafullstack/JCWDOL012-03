@@ -2,6 +2,7 @@
 import Header from '@/components/header/Header';
 import Footer from '@/components/footer/Footer';
 import React, { useEffect, useState } from 'react';
+
 import {
   Box,
   Button,
@@ -38,6 +39,7 @@ interface ProductData {
   }[];
 }
 
+
 interface Pagination {
   currentPage: number;
   prevPage: number | null;
@@ -46,6 +48,23 @@ interface Pagination {
 }
 
 function Product() {
+  const [getData, setGetData] = useState<ProductData[]>([]);
+  useEffect(() => {
+    fetchProduct();
+  }, []);
+
+  const fetchProduct = async () => {
+    const response = await axios.get(
+      'http://localhost:9296/api/product/getAllProduct',
+    );
+    // Mengonversi harga menjadi format IDR sebelum menyimpan ke state
+    const dataWithIDRPrice = response.data.data.map((product: ProductData) => ({
+      ...product,
+      price: formatToIDR(product.price),
+    }));
+    setGetData(dataWithIDRPrice);
+  };
+
   return (
     <>
       <Header />
