@@ -2,6 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { buttonVariants } from '@/components/ui/button';
+
 import ForgotPasswordForm from '@/components/auth/ForgotPasswordForm';
 
 export default function SignInPage() {
@@ -33,17 +34,20 @@ export default function SignInPage() {
         >
           Kembali ke halaman utama
         </Link>
+
         <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
           <div className="absolute inset-0 bg-zinc-900" />
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">
               <p className="text-lg">
+
                 &ldquo;Berbelanja bahan makanan sehari-hari di FreshMart adalah
                 pilihan terbaik&rdquo;
               </p>
             </blockquote>
           </div>
         </div>
+
         <div className="lg:p-8">
           <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
             <div className="flex flex-col space-y-2 text-center">

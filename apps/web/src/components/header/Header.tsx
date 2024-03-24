@@ -104,6 +104,7 @@ export default function Header(props: HeaderProps) {
               <Button asChild variant="secondary">
                 <Link href="/cart" className="flex gap-1 items-center">
                   <ShoppingCart />
+
                   <p className="md:block hidden">Keranjang</p>
                 </Link>
               </Button>
