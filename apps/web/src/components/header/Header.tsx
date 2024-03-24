@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Logo from '/public/logo.png';
 import Image from 'next/image';
 import axios from 'axios';
+import avatarIcon from '../../../public/assets/avatar.png';
 import { useRouter, usePathname } from 'next/navigation';
 import { getSessionClient } from '@/services/client';
 import { Input } from '../ui/input';
@@ -103,7 +104,8 @@ export default function Header(props: HeaderProps) {
               <Button asChild variant="secondary">
                 <Link href="/cart" className="flex gap-1 items-center">
                   <ShoppingCart />
-                  <p>Keranjang</p>
+
+                  <p className="md:block hidden">Keranjang</p>
                 </Link>
               </Button>
             </NavigationMenuItem>
@@ -112,17 +114,17 @@ export default function Header(props: HeaderProps) {
                 <DropdownMenuTrigger asChild>
                   <Button variant="secondary" size="icon">
                     <Avatar>
-                      <AvatarImage src="https://github.com/shadcn.png" />
-                      <AvatarFallback>CN</AvatarFallback>
+                      <AvatarImage src="../../../public/assets/avatar.png" />
+                      <AvatarFallback>A</AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent
-                  className="w-56 md:mr-0 mr-2 bg-white"
+                  className="w-56 md:mr-0 mr-2 bg-white transition-all"
                   sideOffset={6}
                 >
                   <DropdownMenuLabel>
-                    <p>{sessionData?.name}</p>
+                    <p>Halo, {sessionData?.name}!</p>
                   </DropdownMenuLabel>
                   <DropdownMenuSeparator />
                   <DropdownMenuGroup>
