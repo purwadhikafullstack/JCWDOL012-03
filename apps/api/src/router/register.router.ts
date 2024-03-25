@@ -1,8 +1,5 @@
-import {
-  // getEmailFromToken,
-  userRegistration,
-  userVerification,
-} from '@/controllers/register.controller';
+import { userRegistration } from '@/controllers/register/registerUser.controller';
+import { userVerification } from '@/controllers/register/registerVerification.controller';
 import {
   verificationValidator,
   registerValidator,

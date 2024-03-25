@@ -1,128 +1,130 @@
 'use client';
-
 import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import axios from 'axios';
 import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { getSessionClient } from '@/services/client';
-import { PlusCircledIcon } from '@radix-ui/react-icons';
 import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableFooter,
-    TableHead,
-    TableHeader,
-    TableRow,
-  } from '@/components/ui/table';
+  Table,
+  TableBody,
+  TableCell,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { Button } from '@/components/ui/button';
+import Link from 'next/link';
+import CreateStore from './CreateStore';
+import { useRouter } from 'next/navigation';
 
-interface StoreProps {
+
+// Interface untuk user
+interface User {
+  role: string;
+}
+
+// Interface untuk toko
+interface Store {
+  id: number;
+  name: string;
+  location: Location[];
+}
+
+interface Location {
+  id: number;
+  name: string;
+}
+
+// Props untuk ShowStoreList
+interface ShowStoreListProps {
   sessionCookie?: string;
 }
 
-export function ShowStoreList(props: StoreProps) {
-//   const router = useRouter();
-//   const { sessionCookie } = props;
-//   const [sessionData, setSessionData] = useState<any>({});
-//     const [showForm, setShowForm] = useState(false);
+// Komponen ShowStoreList
+const ShowStoreList: React.FC<ShowStoreListProps> = ({ sessionCookie }) => {
+  const [stores, setStores] = useState<Store[]>([]);
+  const [showCreateStoreForm, setShowCreateStoreForm] = useState(false);
+  const [showButton, setShowButton] = useState(true);
+  const router = useRouter();
 
-//   useEffect(() => {
-//     getSessionClient(sessionCookie).then((data) => {
-//       if (data) setSessionData(data);
-//     });
-//   }, [sessionCookie]);
+  // Fetch daftar toko saat komponen dimount
+  useEffect(() => {
+    async function fetchStoreList() {
+      try {
+        const response = await axios.get(
+          'http://localhost:8000/api/admin/store-list',
+        );
+        if (response.status === 200) {
+          setStores(response.data.data);
+        } else {
+          throw new Error('Failed to fetch store list');
+        }
+      } catch (error) {
+        console.error('Error fetching store list:', error);
+      }
+    }
 
-//   const onSuccess = () => {
-//     router.push('/profile');
-//     router.refresh();
-//   };
+    fetchStoreList();
+  }, []);
 
-  //   const handleAddAddressClick = () => {
-  //     setShowForm(true);
-  //   };
+  // Fungsi untuk menangani klik tombol "Buat Toko"
+  const handleCreateStoreClick = () => {
+    setShowCreateStoreForm(true);
+    setShowButton(false);
+  };
 
-  //   const handleCancelCreateAddress = () => {
-  //     setShowForm(false);
-  //   };
+  // Fungsi untuk membatalkan pembuatan toko
+  const handleCancelCreateStore = () => {
+    setShowCreateStoreForm(false);
+    setShowButton(true);
+  };
 
-  //   const fetchAddresses = async () => {
-  //     try {
-  //       const data = await getSessionClient(sessionCookie);
-  //       if (data) setSessionData(data);
-  //     } catch (error) {
-  //       console.error('Error fetching addresses:', error);
-  //     }
-  //   };
+  // Fungsi untuk menangani kesuksesan pembuatan toko
+  const onSuccess = () => {
+    router.refresh();
+    router.push('/profile/admin/store-list');
+  };
 
   return (
-    <Card className="p-4">
-      {/* {sessionData?.addresses && sessionData.addresses.length > 0 && (
-        <ShowAddress
-          addresses={sessionData.addresses}
-          sessionCookie={sessionCookie || ''}
-          fetchAddresses={fetchAddresses}
-        />
-      )}
-      {!showForm && sessionData.addresses?.length === 0 && (
-        <div>
-          <Button onClick={handleAddAddressClick}>Anda belum menambahkan alamat</Button>
-        </div>
-      )}
-      {showForm && (
-        <CreateAddress
-          sessionCookie={sessionCookie || ''}
-          onSuccess={onSuccess}
-          onCancel={handleCancelCreateAddress}
-        />
-      )}
-      {!showForm && (
-        <Button
-          className="m-4"
-          variant="outline"
-          onClick={handleAddAddressClick}
-        >
-          <PlusCircledIcon className="mr-2 w-4" />
-          Tambah Alamat Baru
-        </Button>
-      )} */}
-      <Table>
-          {/* <TableCaption>A list of your events.</TableCaption> */}
+    <>
+      <Card className="p-4">
+        <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[30px]">No.</TableHead>
-              <TableHead className="w-[200px]">Nama Toko</TableHead>
-              <TableHead>Kota</TableHead>
-              <TableHead>Store Admin</TableHead>
-              <TableHead>Jumlah Produk</TableHead>
-              <TableHead>Status</TableHead>
-              <TableHead></TableHead>
+              <TableCell>No</TableCell>
+              <TableCell>Nama Toko</TableCell>
+              <TableCell>Lokasi</TableCell>
+              <TableCell></TableCell>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {/* {event?.map((event: any) => (
-              <TableRow key={event.id}>
-                <TableCell className="font-medium">{event.title}</TableCell>
-                <TableCell>{event.category}</TableCell>
-                <TableCell>{formatDate(event.startDate)}</TableCell>
-                <TableCell>{formatDate(event.endDate)}</TableCell>
-                <TableCell>{event.status}</TableCell>
-              </TableRow>
-            ))} */}
-            <TableRow>
-                <TableCell>1</TableCell>
-                <TableCell>FreshMart Jakarta</TableCell>
-                <TableCell>Jakarta</TableCell>
-                <TableCell>Admin</TableCell>
-                <TableCell>50</TableCell>
-                <TableCell>Aktif</TableCell>
-                <TableCell>
-                    <Button variant='outline'>Atur Toko</Button>
-                    <Button variant='outline'>Hapus Toko</Button>
-                </TableCell>
-              </TableRow>
+            {Array.isArray(stores) &&
+              stores.map((store, index) => (
+                <TableRow key={index}>
+                  <TableCell>{index + 1}</TableCell>
+                  <TableCell>{store.name}</TableCell>
+                  <TableCell></TableCell>
+                  <TableCell>
+                    <Link href={`/profile/admin/store/${store.id}`} passHref>
+                      <Button variant="outline" >Atur Toko</Button>
+                    </Link>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
-    </Card>
+      </Card>
+      {showCreateStoreForm && (
+        <CreateStore
+          sessionCookie={sessionCookie || ''}
+          onSuccess={onSuccess}
+          onCancel={handleCancelCreateStore}
+        />
+      )}
+      <div>
+        {showButton && (
+          <Button variant='outline' onClick={handleCreateStoreClick}>Buat Toko</Button>
+        )}
+      </div>
+    </>
   );
-}
+};
+
+export default ShowStoreList;

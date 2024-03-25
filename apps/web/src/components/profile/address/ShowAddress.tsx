@@ -4,6 +4,17 @@ import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import UpdateAddress from './UpdateAddress';
 import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import {
   HomeIcon,
   Pencil2Icon,
   SewingPinFilledIcon,
@@ -100,9 +111,28 @@ const ShowAddress: React.FC<ShowAddressProps> = ({
                   <Pencil2Icon className="mr-2 w-4" />
                   Ubah Alamat
                 </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="outline">Show Dialog</Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent className="bg-white">
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Hapus Alamat
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                      Apakah anda yakin ingin menghapus alamat ini?
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction onClick={() => handleDelete(address.id)}><TrashIcon className="mr-2 w-4" />Hapus Alamat</AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
                 <Button
                   variant="outline"
-                  onClick={() => handleDelete(address.id)}
+                  // onClick={() => handleDelete(address.id)}
                 >
                   <TrashIcon className="mr-2 w-4" />
                   Hapus Alamat

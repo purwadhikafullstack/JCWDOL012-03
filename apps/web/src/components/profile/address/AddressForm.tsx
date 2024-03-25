@@ -50,7 +50,7 @@ export function AddressForm(props: AddressFormProps) {
   };
 
   return (
-    <Card className="p-4">
+    <>
       {sessionData?.addresses && sessionData.addresses.length > 0 && (
         <ShowAddress
           addresses={sessionData.addresses}
@@ -60,7 +60,9 @@ export function AddressForm(props: AddressFormProps) {
       )}
       {!showForm && sessionData.addresses?.length === 0 && (
         <div>
-          <Button onClick={handleAddAddressClick}>Anda belum menambahkan alamat</Button>
+          <Button onClick={handleAddAddressClick}>
+            Anda belum menambahkan alamat
+          </Button>
         </div>
       )}
       {showForm && (
@@ -80,6 +82,6 @@ export function AddressForm(props: AddressFormProps) {
           Tambah Alamat Baru
         </Button>
       )}
-    </Card>
+    </>
   );
 }

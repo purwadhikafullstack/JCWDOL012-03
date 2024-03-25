@@ -15,6 +15,17 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
 import { Card } from '@/components/ui/card';
@@ -39,6 +50,7 @@ export function EmailForm(props: ProfileProps) {
   const router = useRouter();
   const { sessionCookie } = props;
   const [sessionData, setSessionData] = useState<any>({});
+  const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
 
   useEffect(() => {
     getSessionClient(sessionCookie).then((data) => {
@@ -79,32 +91,74 @@ export function EmailForm(props: ProfileProps) {
     }
   };
 
+  const handleOpenForm = () => {
+    setIsFormOpen(true);
+  };
+
+  const handleCloseForm = () => {
+    setIsFormOpen(false);
+  };
+
+  const handleUpdateEmail = () => {
+    form.handleSubmit(onSubmit)();
+  };
+
   return (
     <Card className="p-4">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="newEmail"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input
-                    type="email"
-                    placeholder={sessionData?.email}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button variant="outline" type="submit">
-            Update Email
-          </Button>
-        </form>
-      </Form>
+      {!isFormOpen ? (
+        <div>
+          <p>Email: {sessionData?.email}</p>
+          <div className="mt-4 flex gap-2">
+            <Button variant="outline" onClick={handleOpenForm}>
+              Ganti Email
+            </Button>
+          </div>
+        </div>
+      ) : (
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="newEmail"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Email</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="email"
+                      placeholder={sessionData?.email}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex gap-2">
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="outline">Ganti Email</Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent className="bg-white">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Ganti Email</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Apakah anda yakin ingin mengubah email anda?
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogAction onClick={handleUpdateEmail}>Ya</AlertDialogAction>
+                    <AlertDialogCancel onClick={handleCloseForm}>Tidak</AlertDialogCancel>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+              <Button variant="outline" onClick={handleCloseForm}>
+                Batalkan
+              </Button>
+            </div>
+          </form>
+        </Form>
+      )}
     </Card>
   );
 }

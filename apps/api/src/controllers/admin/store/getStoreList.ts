@@ -9,17 +9,19 @@ export interface jwtPayload {
 
 export const getStoreList = async (req: Request, res: Response) => {
   try {
-    //validasi superadmin
+    // validasi superadmin
     const getCookies = req.cookies['user-token'];
     const cookiesToDecode = jwtDecode<jwtPayload>(getCookies);
 
-    if (!cookiesToDecode) {
+    console.log(cookiesToDecode)
+    
+    if (!cookiesToDecode || cookiesToDecode.role !== 'superadmin') {
       return res.status(401).json({
         code: 401,
         message: "you're not authorized",
       });
     }
-
+    
     const storeListData = await prisma.store.findMany({
       include: {
         location: true,
@@ -32,6 +34,8 @@ export const getStoreList = async (req: Request, res: Response) => {
         order: true,
       },
     });
+    
+    console.log(storeListData);
 
     return res.status(200).json({
       code: 200,

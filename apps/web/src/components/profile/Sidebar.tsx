@@ -49,16 +49,6 @@ const sidebarNavAdmin = [
     href: '/profile/admin/store-admin-list',
     icon: <PersonIcon />,
   },
-  {
-    title: 'Buat Toko',
-    href: '/profile/admin/create-store',
-    icon: <HomeIcon />,
-  },
-  {
-    title: 'Buat Akun Admin',
-    href: '/profile/admin/create-admin-account',
-    icon: <PersonIcon />,
-  },
 ];
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
@@ -89,7 +79,7 @@ export function SidebarNav({
 
   return (
     <div
-      className={`lg:flex lg:relative absolute bg-background lg:-translate-x-0 ease-in transition-all flex-col lg:max-w-[500px] max-w-[500px] min-h-full p-4 gap-4 border rounded-md justify-between z-20 bg-white pt-0 lg:pt-4 ${
+      className={`lg:flex lg:relative absolute bg-background lg:-translate-x-0 ease-in transition-all flex-col lg:max-w-[400px] max-w-[400px] p-4 gap-4 border rounded-md min-h-full justify-between z-20 bg-white pt-0 lg:pt-4 ${
         isOpen ? '-translate-x-0' : '-translate-x-[225px]'
       } `}
     >
@@ -130,9 +120,7 @@ export function SidebarNav({
         </div>
         {isSuperAdmin && (
           <>
-            <CardTitle className="ml-4 mb-2 pb-2">
-              Info Admin
-            </CardTitle>
+            <CardTitle className="ml-4 mb-2 pb-2">Info Admin</CardTitle>
             <div className="flex flex-col pb-4">
               {sidebarNavAdmin.map((item) => (
                 <Link

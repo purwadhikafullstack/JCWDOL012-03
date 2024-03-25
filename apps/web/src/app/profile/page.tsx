@@ -10,9 +10,15 @@ const page = () => {
       <div>
         <h3 className="text-lg font-medium pt-8 lg:pt-1">Profile</h3>
       </div>
-      <AvatarForm sessionCookie={sessionCookie} />
-      <ProfileForm sessionCookie={sessionCookie} />
-      <EmailForm sessionCookie={sessionCookie} />
+      <div className="md:flex justify-items-center sm:gap-4">
+        <div className='pb-4 mx-auto flex justify-center'>
+          <AvatarForm sessionCookie={sessionCookie} />
+        </div>
+        <div className="flex flex-col gap-4 w-full">
+          <ProfileForm sessionCookie={sessionCookie} />
+          <EmailForm sessionCookie={sessionCookie} />
+        </div>
+      </div>
     </div>
   );
 };

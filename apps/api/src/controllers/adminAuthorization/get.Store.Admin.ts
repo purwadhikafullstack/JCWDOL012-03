@@ -35,7 +35,7 @@ export const GetStoreAdmin = async (req: Request, res: Response) => {
       skip: offset,
       take: limit,
       include: {
-        StoreAdmin: {
+        storeAdmin: {
           include: {
             store: true,
           },

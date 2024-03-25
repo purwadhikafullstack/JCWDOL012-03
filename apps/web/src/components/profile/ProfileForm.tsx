@@ -9,23 +9,23 @@ import { getSessionClient } from '@/services/client';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { toast } from '@/components/ui/use-toast';
-import Image from 'next/image';
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import { Input } from '@/components/ui/input';
 import { Card } from '@/components/ui/card';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
@@ -68,6 +68,7 @@ export function ProfileForm(props: ProfileProps) {
   const router = useRouter();
   const { sessionCookie } = props;
   const [sessionData, setSessionData] = useState<any>({});
+  const [isFormOpen, setIsFormOpen] = useState<boolean>(false);
 
   useEffect(() => {
     getSessionClient(sessionCookie).then((data) => {
@@ -108,66 +109,111 @@ export function ProfileForm(props: ProfileProps) {
     }
   };
 
+  const handleOpenForm = () => {
+    setIsFormOpen(true);
+  };
+
+  const handleCloseForm = () => {
+    setIsFormOpen(false);
+  };
+
+  const handleUpdateProfile = () => {
+    form.handleSubmit(onSubmit)();
+  };
+
   return (
     <Card className="p-4">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <FormField
-            control={form.control}
-            name="name"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Nama</FormLabel>
-                <FormControl>
-                  <Input
-                    pattern="[A-Za-z ]+"
-                    placeholder={sessionData?.name}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="username"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Username</FormLabel>
-                <FormControl>
-                  <Input
-                    pattern="[a-z0-9]+"
-                    placeholder={sessionData?.username}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="phone"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>No. Handphone</FormLabel>
-                <FormControl>
-                  <Input
-                    type="number"
-                    placeholder={sessionData?.phone}
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button variant="outline" type="submit">
-            Update Profile
-          </Button>
-        </form>
-      </Form>
+      {!isFormOpen ? ( // Menampilkan data jika form tidak terbuka
+        <div>
+          <p>Nama: {sessionData?.name}</p>
+          <p>Username: {sessionData?.username}</p>
+          <p>No. Handphone: {sessionData?.phone}</p>
+          <div className="mt-4 flex gap-2">
+            <Button variant="outline" onClick={handleOpenForm}>
+              Ganti Profile
+            </Button>
+          </div>
+        </div>
+      ) : (
+        // Menampilkan form jika form terbuka
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nama</FormLabel>
+                  <FormControl>
+                    <Input
+                      pattern="[A-Za-z ]+"
+                      placeholder={sessionData?.name}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="username"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Username</FormLabel>
+                  <FormControl>
+                    <Input
+                      pattern="[a-z0-9]+"
+                      placeholder={sessionData?.username}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>No. Handphone</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      placeholder={sessionData?.phone}
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex gap-2">
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="outline">Update Profile</Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent className="bg-white">
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Update Profile</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Apakah anda yakin ingin mengubah informasi profile anda?
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogAction onClick={handleUpdateProfile}>Ya</AlertDialogAction>
+                    <AlertDialogCancel onClick={handleCloseForm}>Tidak</AlertDialogCancel>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+              <Button variant="outline" onClick={handleCloseForm}>
+                Batal Update Profile
+              </Button>
+            </div>
+          </form>
+        </Form>
+      )}
     </Card>
   );
 }

@@ -27,7 +27,7 @@ const GetStoreAdminById = async (req: Request, res: Response) => {
         id: parseInt(id),
       },
       include: {
-        StoreAdmin: true,
+        storeAdmin: true,
       },
     });
 

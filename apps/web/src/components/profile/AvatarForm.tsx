@@ -78,8 +78,8 @@ export function AvatarForm(props: ProfileProps) {
 
   return (
     <div>
-      <Card>
-        <div className="max-w-[250px] h-[300px] p-4">
+      <Card className="max-w-[250px] h-[310px] p-4">
+        <div className="max-w-[250px] h-[300px] p-1">
           <Card>
           <div className="w-[170px] h-[170px] p-4 m-auto">
             {avatarPreview ? (
@@ -99,10 +99,10 @@ export function AvatarForm(props: ProfileProps) {
             )}
           </div>
           </Card>
-          <div className="flex flex-col gap-2 mt-4">
+          <div className="flex flex-col gap-2 mt-3">
             <label htmlFor="fileUpload" className="cursor-pointer">
-              <Button variant="outline" onClick={onClickUpload}>
-                Select Image
+              <Button  className='w-full' variant="outline" onClick={onClickUpload}>
+                Pilih Gambar
               </Button>
               <input
                 id="fileUpload"
