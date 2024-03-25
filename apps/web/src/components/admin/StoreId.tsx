@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useRouter } from 'next/router';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
@@ -19,8 +18,6 @@ import {
 
 const StoreId = () => {
   const [store, setStore] = useState<any>(null);
-  //   const router = useRouter();
-  //   const { id } = router.query;
 
   const getIdFromPath = () => {
     const path = window.location.pathname;
@@ -57,9 +54,6 @@ const StoreId = () => {
             <p>Admin: {store.location}</p>
             <p>Pinpoint: {store.location}</p>
             {/* Tambahkan data lain yang ingin ditampilkan */}
-            {/* <Button variant="outline" onClick={() => router.back()}>
-              Kembali
-            </Button> */}
             <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button variant="outline">Atur Toko</Button>
@@ -76,7 +70,6 @@ const StoreId = () => {
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction>
-                        {/* <TrashIcon className="mr-2 w-4" /> */}
                         Hapus Alamat
                         </AlertDialogAction>
                     </AlertDialogFooter>

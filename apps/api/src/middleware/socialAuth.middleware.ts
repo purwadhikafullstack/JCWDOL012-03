@@ -5,3 +5,5 @@ export const authorizationUrl = oAuth2Client.generateAuthUrl({
   scope: scopes,
   include_granted_scopes: true,
 });
+
+console.log(authorizationUrl)

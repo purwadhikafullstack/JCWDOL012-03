@@ -19,7 +19,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import axios from 'axios';
 import { signIn } from 'next-auth/react';
 
-
 const formSchema = z.object({
   email: z.string().email({ message: 'Please enter a valid email.' }),
   password: z
@@ -114,7 +113,13 @@ export default function UserSignInForm() {
             </span>
           </div>
         </div>
-        <Button variant="outline" type="button">
+        <Button
+          variant="outline"
+          type="button"
+          onClick={() =>
+            (window.location.href = 'http://localhost:8000/api/auth/google')
+          }
+        >
           <Icons.google className="mr-2 h-4 w-4" />
           Google
         </Button>

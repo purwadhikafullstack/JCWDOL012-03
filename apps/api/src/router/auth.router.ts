@@ -7,11 +7,10 @@ import UpdateStoreAdmin from '@/controllers/adminAuthorization/update.Store.Admi
 import {
   getSessionUser,
   signinUser,
-  signoutUser,
-  socialAuth,
-  socialAuthCallback,
+  signoutUser
 } from '@/controllers/auth.controller';
 import { changePassword, resetPassword } from '@/controllers/auth/forgotPassword.controller';
+import { socialAuth, socialAuthCallback } from '@/controllers/auth/socialAuth';
 import authenticationMiddleware from '@/middleware/auth.middleware';
 import { validateStoreAdminInput } from '@/middleware/validation.Store.Admin.Input';
 import { registerValidator } from '@/middleware/validator.middleware';

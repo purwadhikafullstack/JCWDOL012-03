@@ -37,12 +37,16 @@ export default function UserSignUpForm() {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       const response = await axios
-        .post('http://localhost:8000/api/register/email', JSON.stringify(values), {
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json',
+        .post(
+          'http://localhost:8000/api/register/email',
+          JSON.stringify(values),
+          {
+            withCredentials: true,
+            headers: {
+              'Content-Type': 'application/json',
+            },
           },
-        })
+        )
         .then((res) => res.data)
         .catch((err) => console.log(err));
 
@@ -90,7 +94,13 @@ export default function UserSignUpForm() {
             </span>
           </div>
         </div>
-        <Button variant="outline" type="button" onClick={() => signIn('google')}>
+        <Button
+          variant="outline"
+          type="button"
+          onClick={() =>
+            (window.location.href = 'http://localhost:8000/api/auth/google')
+          }
+        >
           <Icons.google className="mr-2 h-4 w-4" />
           Google
         </Button>
