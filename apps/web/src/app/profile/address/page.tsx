@@ -1,8 +1,12 @@
 import { AddressForm } from '@/components/profile/address/AddressForm';
 import { cookies } from 'next/headers';
+import { redirect } from 'next/navigation';
 
 const page = () => {
   const sessionCookie: string | undefined = cookies().get('user-token')?.value;
+  if (!sessionCookie) {
+    redirect('/');
+  }
   return (
     <div className="space-y-6">
       <div>

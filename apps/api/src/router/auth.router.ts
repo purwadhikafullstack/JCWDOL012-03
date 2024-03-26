@@ -20,12 +20,12 @@ const authRouter: Router = Router();
 
 authRouter.post('/login', signinUser);
 authRouter.post('/logout', signoutUser);
-authRouter.post('/logout', signoutUser);
 authRouter.post('/reset-password', resetPassword);
-authRouter.post('/change-password', changePassword);
+authRouter.post('/change-password', authenticationMiddleware, changePassword);
 authRouter.get('/google', socialAuth);
 authRouter.get('/google/callback', socialAuthCallback);
 authRouter.get('/session', authenticationMiddleware, getSessionUser);
+
 authRouter.get('/getStoreList', getStoreList);
 authRouter.get('/getStoreAdmin', GetStoreAdmin);
 authRouter.post('/createStoreAdmin', validateStoreAdminInput, CreateStoreAdmin);
