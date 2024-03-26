@@ -1,6 +1,9 @@
 import { Router } from 'express';
 import authRouter from '@/router/auth.router';
 import registerRouter from './register.router';
+import profileRouter from './profile.router';
+import adminRouter from './admin.router';
+// import userRouter from '@/router/user.router';
 import productRouter from '@/routers/Product.And.Category.Management.Router';
 import stockRouter from '@/routers/Stock.Management.Router';
 
