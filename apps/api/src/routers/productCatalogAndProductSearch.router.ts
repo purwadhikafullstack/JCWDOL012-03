@@ -3,6 +3,6 @@ import { Router } from 'express';
 
 const productCatalogAndSearchProductRouter = Router();
 
-productCatalogAndSearchProductRouter.get('/search', SearchProduct);
+productCatalogAndSearchProductRouter.get('/:id/search', SearchProduct);
 
 export default productCatalogAndSearchProductRouter;

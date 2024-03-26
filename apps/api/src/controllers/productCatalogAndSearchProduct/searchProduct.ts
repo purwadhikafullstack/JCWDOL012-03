@@ -20,6 +20,7 @@ const SearchProduct = async (req: Request, res: Response) => {
     //   });
     // }
 
+    const { id } = req.params;
     const queryParam = req.query.query;
     const query =
       typeof queryParam === 'string' ? queryParam : queryParam?.toString();
@@ -33,6 +34,7 @@ const SearchProduct = async (req: Request, res: Response) => {
     }
     const products = await prisma.product.findMany({
       where: {
+        storeId: parseInt(id),
         OR: [
           {
             name: {
