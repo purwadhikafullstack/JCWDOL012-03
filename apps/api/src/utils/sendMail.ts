@@ -4,42 +4,36 @@ import ejs from 'ejs';
 import path from 'path';
 
 interface EmailOptions {
-	email: string;
-	subject: string;
-	template: string;
-	data: { [key: string]: any };
+  email: string;
+  subject: string;
+  template: string;
+  data: { [key: string]: any };
 }
 
 const sendMail = async (options: EmailOptions): Promise<void> => {
-	const transporter: Transporter = nodemailer.createTransport({
-		host: process.env.SMTP_HOST,
-		port: parseInt(process.env.SMTP_PORT || '587'),
-		service: process.env.SMTP_SERVICE,
-		auth: {
-			user: process.env.SMTP_USER,
-			pass: process.env.SMTP_PASSWORD,
-		},
-	});
+  const transporter: Transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: parseInt(process.env.SMTP_PORT || '587'),
+    service: process.env.SMTP_SERVICE,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASSWORD,
+    },
+  });
 
-    const {email, subject, template, data} = options;
-<<<<<<< HEAD
-    const templatePath = path.join(__dirname, '../mails/', template);
-=======
-    // Get the path to the email template file
-    const templatePath = path.join(__dirname, '../mails/', template);
+  const { email, subject, template, data } = options;
+  const templatePath = path.join(__dirname, '../mails/', template);
+  // Get the path to the email template file
+  const html: string = await ejs.renderFile(templatePath, data);
 
-    // Render the email template with ejs
->>>>>>> adb62195e206f27bd7b7bd45023f2bbd77c803f1
-    const html:string = await ejs.renderFile(templatePath, data);
+  const mailOptions = {
+    from: process.env.SMTP_MAIL,
+    to: email,
+    subject,
+    html,
+  };
 
-    const mailOptions = {
-        from: process.env.SMTP_MAIL,
-        to: email,
-        subject,
-        html
-    };
-
-    await transporter.sendMail(mailOptions);
+  await transporter.sendMail(mailOptions);
 };
 
 export default sendMail;
