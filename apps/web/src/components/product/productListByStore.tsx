@@ -67,6 +67,7 @@ function ProductListByStore() {
       <Box h={'100vh'}>
         <Center mt={4}>
           <VStack>
+
             <Heading>{getData[0].store.name}</Heading>
             <Box mt={4} h={1} w="60%" bg={'#7DBE3C'} borderRadius="full" />
           </VStack>

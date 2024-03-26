@@ -33,6 +33,7 @@ const sendMail = async (options: EmailOptions): Promise<void> => {
     html,
   };
 
+
   await transporter.sendMail(mailOptions);
 };
 
