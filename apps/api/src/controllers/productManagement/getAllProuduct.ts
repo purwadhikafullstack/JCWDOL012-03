@@ -5,8 +5,6 @@ import { jwtDecode } from 'jwt-decode';
 const GetAllProduct = async (req: Request, res: Response) => {
   try {
     const { storeId } = req.body;
-
-
     let { page = 1, limit = 6 } = req.query;
     page = typeof page === 'string' ? parseInt(page) : 1;
     limit = typeof limit === 'string' ? parseInt(limit) : 6;
@@ -34,7 +32,6 @@ const GetAllProduct = async (req: Request, res: Response) => {
       code: 200,
       message: 'data successfully retrieved',
       data: allData,
-
       pagination: {
         currentPage: page,
         prevPage,

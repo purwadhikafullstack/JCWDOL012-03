@@ -10,7 +10,6 @@ export interface jwtPayload {
 const createProduct = async (req: Request, res: Response) => {
   try {
     const { name, description, price, stock, storeId, categoryId } = req.body;
-
     const imagesUrl = req.file?.path; // Mengambil gambar dari hasil middleware
 
     // const getCookies = req.cookies['user-token'];
@@ -52,7 +51,6 @@ const createProduct = async (req: Request, res: Response) => {
         image: {
           createMany: {
             data: {
-
               url: imagesUrl || '',
             },
           },
@@ -72,7 +70,6 @@ const createProduct = async (req: Request, res: Response) => {
       code: 200,
       message: 'Product successfully created',
       data: product,
-
     });
   } catch (error) {
     console.error('Error creating product:', error);
