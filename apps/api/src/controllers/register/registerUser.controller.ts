@@ -3,7 +3,6 @@ import { Request, Response } from 'express';
 import ejs from 'ejs';
 import path from 'path';
 import sendMail from '@/utils/sendMail';
-
 import { generateVerificationLink } from '@/utils/linkGenerator';
 
 
