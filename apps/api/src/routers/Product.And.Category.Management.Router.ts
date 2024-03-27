@@ -24,7 +24,7 @@ productRouter.post('/createProductCategory', CreateProductCategory);
 productRouter.get('/getProductCategory', GetProductCategory);
 productRouter.get('/getProductCategoryById/:id', GetProductCategoryById);
 productRouter.patch('/updateProductCategory/:id', UpdateProductCategory);
-productRouter.delete('/deleteProductCategory/:id', DeleteProductCategory);
+productRouter.patch('/deleteProductCategory/:id', DeleteProductCategory);
 
 // product
 productRouter.post(
