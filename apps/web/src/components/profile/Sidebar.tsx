@@ -4,8 +4,8 @@ import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { cn } from '@/lib/utils';
-import { Button, buttonVariants } from '@/components/ui/button';
-import { Card, CardDescription, CardHeader, CardTitle } from '../ui/card';
+import { buttonVariants } from '@/components/ui/button';
+import { Card, CardHeader } from '../ui/card';
 import { getSessionClient } from '@/services/client';
 import {
   HomeIcon,
@@ -53,15 +53,19 @@ const sidebarNavAdmin = [
 
 interface SidebarNavProps extends React.HTMLAttributes<HTMLElement> {
   sessionCookie?: string;
+  items: {
+    href: string;
+    title: string;
+  }[];
 }
 
 export function SidebarNav({
   className,
+  items,
   sessionCookie,
   ...props
 }: SidebarNavProps) {
   const pathname = usePathname();
-  const [isOpen, setIsOpen] = useState(false);
   const [sessionData, setSessionData] = useState<any>({});
 
   useEffect(() => {
@@ -69,13 +73,6 @@ export function SidebarNav({
       if (data) setSessionData(data);
     });
   }, [sessionCookie]);
-
-  const handleOpenSidebar = () => {
-    setIsOpen(!isOpen);
-    console.log(sessionData.role);
-  };
-
-  const isSuperAdmin = sessionData.role === 'superadmin';
 
   return (
     <div
@@ -144,6 +141,6 @@ export function SidebarNav({
           </>
         )}
       </nav>
-    </div>
+    </Card>
   );
 }

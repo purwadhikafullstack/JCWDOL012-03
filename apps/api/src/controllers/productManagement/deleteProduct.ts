@@ -21,15 +21,12 @@ const DeleteProduct = async (req: Request, res: Response) => {
     //   });
     // }
 
-    await prisma.image.deleteMany({
-      where: {
-        productId: parseInt(id),
-      },
-    });
-
-    await prisma.product.delete({
+    await prisma.product.update({
       where: {
         id: parseInt(id),
+      },
+      data: {
+        status: false,
       },
     });
 

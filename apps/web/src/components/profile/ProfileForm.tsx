@@ -34,6 +34,7 @@ interface ProfileProps {
   sessionCookie?: string;
 }
 
+
 const profileFormSchema = z
   .object({
     name: z

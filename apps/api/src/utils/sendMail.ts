@@ -4,22 +4,22 @@ import ejs from 'ejs';
 import path from 'path';
 
 interface EmailOptions {
-	email: string;
-	subject: string;
-	template: string;
-	data: { [key: string]: any };
+  email: string;
+  subject: string;
+  template: string;
+  data: { [key: string]: any };
 }
 
 const sendMail = async (options: EmailOptions): Promise<void> => {
-	const transporter: Transporter = nodemailer.createTransport({
-		host: process.env.SMTP_HOST,
-		port: parseInt(process.env.SMTP_PORT || '587'),
-		service: process.env.SMTP_SERVICE,
-		auth: {
-			user: process.env.SMTP_USER,
-			pass: process.env.SMTP_PASSWORD,
-		},
-	});
+  const transporter: Transporter = nodemailer.createTransport({
+    host: process.env.SMTP_HOST,
+    port: parseInt(process.env.SMTP_PORT || '587'),
+    service: process.env.SMTP_SERVICE,
+    auth: {
+      user: process.env.SMTP_USER,
+      pass: process.env.SMTP_PASSWORD,
+    },
+  });
 
     const {email, subject, template, data} = options;
     const templatePath = path.join(__dirname, '../mails/', template);
@@ -31,7 +31,7 @@ const sendMail = async (options: EmailOptions): Promise<void> => {
         html
     };
 
-    await transporter.sendMail(mailOptions);
+  await transporter.sendMail(mailOptions);
 };
 
 export default sendMail;

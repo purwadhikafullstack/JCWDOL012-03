@@ -15,6 +15,7 @@ import { validateProductInput } from '@/middleware/validation.product.input';
 import UpdateProduct from '@/controllers/productManagement/updateProduct';
 import { validateProductUpdate } from '@/middleware/validation.Product.Update';
 import GetProductById from '@/controllers/productManagement/getProductById';
+import AddProductImage from '@/controllers/productManagement/addProductImage';
 
 const productRouter = Router();
 
@@ -23,7 +24,7 @@ productRouter.post('/createProductCategory', CreateProductCategory);
 productRouter.get('/getProductCategory', GetProductCategory);
 productRouter.get('/getProductCategoryById/:id', GetProductCategoryById);
 productRouter.patch('/updateProductCategory/:id', UpdateProductCategory);
-productRouter.delete('/deleteProductCategory/:id', DeleteProductCategory);
+productRouter.patch('/deleteProductCategory/:id', DeleteProductCategory);
 
 // product
 productRouter.post(
@@ -36,5 +37,6 @@ productRouter.get('/getAllProduct', GetAllProduct);
 productRouter.delete('/deleteProduct/:id', deleteFileMiddleware, deleteProduct);
 productRouter.post('/updateProduct/:id', validateProductUpdate, UpdateProduct);
 productRouter.get('/getProductById/:id', GetProductById);
+productRouter.post('/addImageProduct/:id', handleImageUpload, AddProductImage);
 
 export default productRouter;

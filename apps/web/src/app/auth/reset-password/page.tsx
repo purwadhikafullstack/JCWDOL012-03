@@ -1,3 +1,4 @@
+
 import Image from 'next/image';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
@@ -38,6 +39,7 @@ export default function SignInPage() {
           <div className="relative z-20 mt-auto">
             <blockquote className="space-y-2">
               <p className="text-lg">
+
                 &ldquo;Berbelanja bahan makanan sehari-hari di FreshMart adalah
                 pilihan terbaik&rdquo;
               </p>
@@ -59,5 +61,6 @@ export default function SignInPage() {
         </div>
       </div>
     </>
+
   );
 }
