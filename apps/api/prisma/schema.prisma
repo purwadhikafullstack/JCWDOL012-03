@@ -70,19 +70,29 @@ model StoreAdmin {
 }
 
 model Product {
-  id          Int         @id @default(autoincrement())
-  name        String
-  image       Image[]
-  description String
-  price       Float
-  stock       Int
-  storeId     Int
-  store       Store       @relation(fields: [storeId], references: [id])
-  categories  Category[]
-  discount    Discount[]
-  cart        Cart[]
-  orderItem   OrderItem[]
+  id           Int            @id @default(autoincrement())
+  name         String
+  image        Image[]
+  description  String
+  price        Float
+  stock        Int
+  storeId      Int
+  store        Store          @relation(fields: [storeId], references: [id])
+  categories   Category[]
+  discount     Discount[]
+  cart         Cart[]
+  orderItem    OrderItem[]
+  StockJournal StockJournal[]
   status      Boolean
+}
+
+model StockJournal {
+  id             Int     @id @default(autoincrement())
+  product        Product @relation(fields: [productId], references: [id])
+  productId      Int
+  quantityBefore Int
+  quantityAfter  Int
+  type           String
 }
 
 model Image {
@@ -139,13 +149,19 @@ model ReferralCode {
 }
 
 model Discount {
-  id            Int      @id @default(autoincrement())
-  productId     Int
-  product       Product  @relation(fields: [productId], references: [id])
-  discountType  String // Contoh: 'percentage', 'fixed'
-  discountValue Float
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  id                Int      @id @default(autoincrement())
+  productId         Int?
+  product           Product? @relation(fields: [productId], references: [id])
+  discountName      String
+  discountType      String // Contoh: 'percentage', 'fixed', 'bogo'
+  discountValue     Float
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  usage             Boolean //false: belum dipakai
+  status            Boolean //true: aktir, false: non-aktif (didelete)
+  maxDiscountValue  Int?
+  minPurchaseAmount Int?
+  limit             Int?
 }
 
 model Voucher {
