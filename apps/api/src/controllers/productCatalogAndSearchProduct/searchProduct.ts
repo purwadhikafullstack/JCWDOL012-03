@@ -48,6 +48,11 @@ const SearchProduct = async (req: Request, res: Response) => {
           },
         ],
       },
+      include: {
+        image: true,
+        store: true,
+        categories: true,
+      },
     });
 
     if (products.length === 0) {
