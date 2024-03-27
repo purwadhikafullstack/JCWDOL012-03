@@ -14,13 +14,13 @@ const profileRouter: Router = Router();
 
 profileRouter.post('/update-avatar', authenticationMiddleware,upload.single('avatar'), updateAvatarUser);
 profileRouter.put('/update-info', authenticationMiddleware, updateProfileUser);
-profileRouter.post('/change-email', authenticationMiddleware,changeEmailUser);
-profileRouter.put('/update-email', authenticationMiddleware,updateEmailUser);
-profileRouter.put('/update-password', authenticationMiddleware,updatePasswordUser);
-profileRouter.post('/create-address', authenticationMiddleware,createAddress);
-profileRouter.put('/update-address/:id', authenticationMiddleware,updateAddress);
-profileRouter.put('/default-address/:id', authenticationMiddleware,defaultAddress);
-profileRouter.delete('/delete-address/:id', authenticationMiddleware,deleteAddress);
+profileRouter.post('/change-email', authenticationMiddleware, changeEmailUser);
+profileRouter.put('/update-email', authenticationMiddleware, updateEmailUser);
+profileRouter.put('/update-password', authenticationMiddleware, updatePasswordUser);
+profileRouter.post('/create-address', authenticationMiddleware, createAddress);
+profileRouter.put('/update-address/:id', authenticationMiddleware, updateAddress);
+profileRouter.put('/default-address/:id', authenticationMiddleware, defaultAddress);
+profileRouter.delete('/delete-address/:id', authenticationMiddleware, deleteAddress);
 
 
 export default profileRouter;

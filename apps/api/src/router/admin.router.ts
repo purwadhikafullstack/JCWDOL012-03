@@ -8,8 +8,8 @@ import { Router } from 'express';
 const adminRouter: Router = Router();
 
 adminRouter.post('/create-store', authenticationMiddleware, createStore);
-adminRouter.get('/store-list', authenticationMiddleware, getStoreList);
-adminRouter.get('/store/:id', authenticationMiddleware, getStoreById);
+adminRouter.get('/store-list', getStoreList);
+adminRouter.get('/store/:id', getStoreById);
 // adminRouter.get('/store-admin-list', getStoreAdminList);
 
 export default adminRouter;

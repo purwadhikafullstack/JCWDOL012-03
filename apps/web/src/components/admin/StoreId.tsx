@@ -55,28 +55,23 @@ const StoreId = () => {
             <p>Pinpoint: {store.location}</p>
             {/* Tambahkan data lain yang ingin ditampilkan */}
             <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button variant="outline">Atur Toko</Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent className="bg-white">
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>
-                        Atur Toko
-                      </AlertDialogTitle>
-                      <AlertDialogDescription>
-                      Apakah anda yakin ingin menghapus alamat ini?
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction>
-                        Hapus Alamat
-                        </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
+              <AlertDialogTrigger asChild>
+                <Button variant="outline">Atur Toko</Button>
+              </AlertDialogTrigger>
+              <AlertDialogContent className="bg-white">
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Atur Toko</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Apakah anda yakin ingin menghapus alamat ini?
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction>Hapus Alamat</AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
-          
         ) : (
           <p>Loading...</p>
         )}

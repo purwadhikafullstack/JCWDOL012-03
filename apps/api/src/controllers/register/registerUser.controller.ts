@@ -36,7 +36,7 @@ export const userRegistration = async (req: Request, res: Response) => {
     const verificationLink = generateVerificationLink(email);
     const data = { verificationLink };
     const html = await ejs.renderFile(
-      path.join(__dirname, '../mails/activation-mail.ejs'),
+      path.join(__dirname, '../../mails/activation-mail.ejs'),
       data,
     );
 

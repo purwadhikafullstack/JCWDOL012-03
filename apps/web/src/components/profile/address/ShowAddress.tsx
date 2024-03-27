@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Card, CardHeader } from '@/components/ui/card';
+import { Card, CardDescription, CardHeader } from '@/components/ui/card';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
 import UpdateAddress from './UpdateAddress';
@@ -82,6 +82,37 @@ const ShowAddress: React.FC<ShowAddressProps> = ({
     }
   };
 
+  const handleAddCurrentLocationPoint = async (id: string) => {
+    try {
+      const userToken = sessionCookie;
+      const position = await new Promise<GeolocationPosition>(
+        (resolve, reject) => {
+          navigator.geolocation.getCurrentPosition(resolve, reject);
+        },
+      );
+
+      const { latitude, longitude } = position.coords;
+
+      await axios.patch(
+        `http://localhost:8000/api/location/current/${id}`,
+        {
+          latitude: latitude,
+          longitude: longitude,
+        },
+        {
+          withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${userToken}`,
+          },
+        },
+      );
+
+      console.log('Location point added successfully');
+    } catch (error) {
+      console.error('Error adding location point:', error);
+    }
+  };
+
   return (
     <div>
       <CardHeader className="-mb-5">Daftar Alamat</CardHeader>
@@ -97,12 +128,16 @@ const ShowAddress: React.FC<ShowAddressProps> = ({
             />
           ) : (
             <Card className="p-4 m-4">
-              <p>Jalan: {address.street}</p>
-              <p>Kota: {address.city}</p>
-              <p>Provinsi: {address.province}</p>
-              <p>Kode Pos: {address.zipCode}</p>
-              {address.notes && <p>Notes: {address.notes}</p>}
-              <p>Alamat Utama: {address.isPrimary ? 'Ya' : 'Tidak'}</p>
+              <CardDescription>Jalan: {address.street}</CardDescription>
+              <CardDescription>Kota: {address.city}</CardDescription>
+              <CardDescription>Provinsi: {address.province}</CardDescription>
+              <CardDescription>Kode Pos: {address.zipCode}</CardDescription>
+              {address.notes && (
+                <CardDescription>Notes: {address.notes}</CardDescription>
+              )}
+              <CardDescription>
+                Alamat Utama: {address.isPrimary ? 'Ya' : 'Tidak'}
+              </CardDescription>
               <div className="mt-4 flex gap-2">
                 <Button
                   variant="outline"
@@ -113,37 +148,66 @@ const ShowAddress: React.FC<ShowAddressProps> = ({
                 </Button>
                 <AlertDialog>
                   <AlertDialogTrigger asChild>
-                    <Button variant="outline">Show Dialog</Button>
+                    <Button variant="outline">
+                      <TrashIcon className="mr-2 w-4" />
+                      Hapus Alamat
+                    </Button>
                   </AlertDialogTrigger>
                   <AlertDialogContent className="bg-white">
                     <AlertDialogHeader>
-                      <AlertDialogTitle>
-                        Hapus Alamat
-                      </AlertDialogTitle>
+                      <AlertDialogTitle>Hapus Alamat</AlertDialogTitle>
                       <AlertDialogDescription>
-                      Apakah anda yakin ingin menghapus alamat ini?
+                        Apakah anda yakin ingin menghapus alamat ini?
                       </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction onClick={() => handleDelete(address.id)}><TrashIcon className="mr-2 w-4" />Hapus Alamat</AlertDialogAction>
+                      <AlertDialogAction
+                        onClick={() => handleDelete(address.id)}
+                      >
+                        <TrashIcon className="mr-2 w-4" />
+                        Hapus Alamat
+                      </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
                 </AlertDialog>
-                <Button
-                  variant="outline"
-                  // onClick={() => handleDelete(address.id)}
-                >
-                  <TrashIcon className="mr-2 w-4" />
-                  Hapus Alamat
-                </Button>
-                <Button
-                  variant="outline"
-                  // onClick={() => handleDelete(address.id)}
-                >
-                  <SewingPinFilledIcon className="mr-2 w-4" />
-                  Set Pinpoint
-                </Button>
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="outline">
+                      <SewingPinFilledIcon className="mr-2 w-4" />
+                      Atur Titik Alamat
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent className="bg-white">
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Atur Titik Alamat</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        Tentukan titik alamat berdasarkan posisi yang anda
+                        inginkan
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter
+                      style={{
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <AlertDialogAction
+                        className="bg-black text-white"
+                        onClick={() => handleAddCurrentLocationPoint(address.id)}
+                      >
+                        Posisi Saat Ini
+                      </AlertDialogAction>
+                      <AlertDialogAction
+                      // onClick={() => }
+                      >
+                        Posisi Lain
+                      </AlertDialogAction>
+                      <AlertDialogCancel>Batalkan</AlertDialogCancel>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
                 <Button
                   variant="outline"
                   onClick={() => handleSetDefaultAddress(address.id)}
@@ -151,10 +215,8 @@ const ShowAddress: React.FC<ShowAddressProps> = ({
                     display: address.isPrimary ? 'none' : '',
                   }}
                 >
-                  {/* <div className='flex'> */}
                   <HomeIcon className="mr-2 w-4" />
                   Set Alamat Utama
-                  {/* </div> */}
                 </Button>
               </div>
             </Card>

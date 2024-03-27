@@ -6,6 +6,7 @@ import ErrorHandler from '@/utils/errorHandler';
 interface CreateAddressPayload {
   street: string;
   city: string;
+  state: string;
   province: string;
   zipCode: string;
   notes: string;
@@ -25,12 +26,13 @@ export const createAddress = async (
     const {
       street,
       city,
+      state,
       province,
       zipCode,
       notes,
       isPrimary,
     }: CreateAddressPayload = req.body;
-    console.log(isPrimary)
+    console.log(isPrimary);
 
     const getCookies = req.cookies['user-token'];
     const cookiesToDecode = jwtDecode<jwtPayload>(getCookies);
@@ -58,7 +60,6 @@ export const createAddress = async (
       },
     });
 
-
     if (userAddresses.length === 0) {
       newIsPrimary = true;
     } else if (newIsPrimary) {
@@ -76,6 +77,7 @@ export const createAddress = async (
         userId: parsedId,
         street,
         city,
+        state,
         province,
         zipCode,
         notes,
