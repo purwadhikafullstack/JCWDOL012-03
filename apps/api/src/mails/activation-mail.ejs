@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Email Aktivasi Akun FreshMart </title>
+		<style type="text/css">
+			/* Base */
+			body {
+				margin: 0;
+				padding: 0;
+				min-width: 100%;
+				font-family: Arial, sans-serif;
+				font-size: 16px;
+				line-height: 1.5;
+				background-color: #fafafa;
+				color: #222222;
+			}
+			a {
+				color: #000;
+				text-decoration: none;
+			}
+			h1 {
+				font-size: 24px;
+				font-weight: 700;
+				line-height: 1.25;
+				margin-top: 0;
+				margin-bottom: 15px;
+				text-align: center;
+			}
+			p {
+				margin-top: 0;
+				margin-bottom: 24px;
+			}
+			table td {
+				vertical-align: top;
+			}
+			/* Layout */
+			.email-wrapper {
+				max-width: 600px;
+				margin: 0 auto;
+			}
+			.email-header {
+				background-color: #4CAF50;
+				padding: 24px;
+				color: #ffffff;
+			}
+			.email-body {
+				padding: 24px;
+				background-color: #ffffff;
+			}
+			.email-footer {
+				background-color: #f6f6f6;
+				padding: 24px;
+			}
+			/* Button */
+			.button {
+				display: inline-block;
+				background-color: #4CAF50;
+				color: #ffffff;
+				font-size: 16px;
+				font-weight: 700;
+				text-align: center;
+				text-decoration: none;
+				padding: 12px 24px;
+				border-radius: 4px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="email-wrapper">
+			<div class="email-header">
+				<h1>Selamat datang di FreshMart</h1>
+			</div>
+			<div class="email-body">
+				<p>Halo,</p>
+				<p>Terima kasih sudah melakukan registrasi di FreshMart. Untuk mengaktifkan akun anda, silahkan klik link di bawah ini</p>
+				<p><%= verificationLink %></p>
+				<p>Link ini hanya berlaku sampai dengan 1 jam setelah email ini diterima</p>
+				<p>Jika anda tidak melakukan registrasi di FreshMart, dimohon untuk mengabaikan email ini</p>
+			</div>
+			<div class="email-footer">
+				<p>Jika anda memiliki pertanyaan terkait dengan FreshMart, silahkan hubungi<a href="mailto:freshmart.idn@gmail.com"> freshmart.idn@gmail.com</a></p>
+			</div>
+		</div>
+	</body>
+</html>

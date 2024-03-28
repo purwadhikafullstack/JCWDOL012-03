@@ -30,5 +30,8 @@
     "hooks": {
       "pre-commit": "npx lint-staged"
     }
+  },
+  "dependencies": {
+    "react-hot-toast": "^2.4.1"
   }
 }
