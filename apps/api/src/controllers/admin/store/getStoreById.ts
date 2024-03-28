@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 interface Store {
   id: number;
   name: string;
-//   location: Location[];
+  location: Location[];
 //   admins: StoreAdmin[];
 //   products: Product[];
 //   orders: Order[];
@@ -12,7 +12,10 @@ interface Store {
 
 interface Location {
   id: number;
-  name: string;
+  latitude: number;
+  longitude: number;
+  addressId: number | null;
+  storeId: number | null;
 }
 
 interface StoreAdmin {
@@ -36,7 +39,7 @@ export const getStoreById = async (req: Request, res: Response) => {
         id: parseInt(id),
       },
       include: {
-        // location: true,
+        location: true,
         // admins: true,
         // products: true,
         // orders: true,
@@ -50,10 +53,18 @@ export const getStoreById = async (req: Request, res: Response) => {
       });
     }
 
+    const locations: Location[] = store.location.map((loc) => ({
+      id: loc.id,
+      latitude: loc.latitude,
+      longitude: loc.longitude,
+      addressId: loc.addressId,
+      storeId: loc.storeId,
+    }));
+
     const formattedStore: Store = {
       id: store.id,
       name: store.name,
-    //   location: store.location,
+      location: locations
     //   admins: store.admins,
     //   products: store.products,
     //   orders: store.orders,

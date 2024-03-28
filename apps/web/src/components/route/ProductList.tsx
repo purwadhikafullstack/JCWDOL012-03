@@ -17,12 +17,17 @@ interface UserLocation {
   longitude: number;
 }
 
+interface StoreData {
+  nearestStore: [];
+  name: string;
+}
+
 const ProductList = () => {
   const router = useRouter();
   const [userLocation, setUserLocation] = useState<UserLocation | null>(null);
+  const [storeData, setStoreData] = useState<StoreData | null>(null);
 
   useEffect(() => {
-    // Mendapatkan lokasi pengguna saat komponen dimuat
     getUserLocation();
   }, []);
 
@@ -35,26 +40,35 @@ const ProductList = () => {
         },
         (error) => {
           console.error('Error getting user location:', error);
-        }
+        },
       );
     } else {
       console.error('Geolocation is not supported by this browser.');
     }
   };
 
-  const getLocationFromAPI = async (latitude: number, longitude: number) => {
+  const getNearestStoreData = async (latitude: number, longitude: number) => {
     try {
-      const response = await axios.get('http://localhost:8000/api/profile/location', {
-        params: {
-          latitude,
-          longitude,
-        }
-      });
-      console.log('API response:', response.data);
+      const response = await axios.get(
+        `http://localhost:8000/api/location/nearest-store?latitude=${latitude}&longitude=${longitude}`,
+      );
+      if (response.status === 200) {
+        setStoreData(response.data);
+        console.log(response.data.nearestStore.name);
+      } else {
+        throw new Error('Failed to fetch store data');
+      }
     } catch (error) {
       console.error('Error sending location to API:', error);
     }
-};
+  };
+
+  useEffect(() => {
+    if (userLocation) {
+      const { latitude, longitude } = userLocation;
+      getNearestStoreData(latitude, longitude);
+    }
+  }, [userLocation]);
 
   const handleNext = () => {
     router.push('/product');
@@ -62,8 +76,7 @@ const ProductList = () => {
 
   return (
     <div>
-      <Card className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-5 mb-5">
-      </Card>
+      <Card className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-5 mb-5"></Card>
       <Card className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-5 mb-5">
         <h1>Produk yang sering dicari</h1>
         <Card>
@@ -110,6 +123,11 @@ const ProductList = () => {
         <div>
           <p>Latitude: {userLocation.latitude}</p>
           <p>Longitude: {userLocation.longitude}</p>
+        </div>
+      )}
+      {storeData && (
+        <div>
+          <p>{storeData.nearestStore.name}</p>
         </div>
       )}
     </div>

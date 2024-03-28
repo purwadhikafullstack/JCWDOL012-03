@@ -218,6 +218,7 @@ const ShowAddress: React.FC<ShowAddressProps> = ({
                   <HomeIcon className="mr-2 w-4" />
                   Set Alamat Utama
                 </Button>
+                CreateStorePoint
               </div>
             </Card>
           )}

@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Card } from '@/components/ui/card';
+import { Card, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
   AlertDialog,
@@ -15,9 +15,31 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog';
+import CreateStorePoint from './form/CreateStorePoint';
+import { getSessionClient } from '@/services/client';
+import { useRouter } from 'next/navigation';
 
-const StoreId = () => {
+interface StoreIdProps {
+  sessionCookie?: string;
+}
+
+export function StoreId(props: StoreIdProps) {
+  const { sessionCookie } = props;
+  const router = useRouter();
   const [store, setStore] = useState<any>(null);
+  const [sessionData, setSessionData] = useState<any>({});
+  const [showForm, setShowForm] = useState(false);
+
+  useEffect(() => {
+    getSessionClient(sessionCookie).then((data) => {
+      if (data) setSessionData(data);
+    });
+  }, [sessionCookie]);
+
+  const onSuccess = () => {
+    router.push('/profile');
+    router.refresh();
+  };
 
   const getIdFromPath = () => {
     const path = window.location.pathname;
@@ -43,17 +65,24 @@ const StoreId = () => {
     fetchStoreById();
   }, [id]);
 
+  const handleCancelCreatePoint = () => {
+    setShowForm(false);
+  };
+
   return (
     <div>
       <Card className="p-4">
         {store ? (
           <div>
-            <p>ID Toko: {store.id}</p>
-            <p>Nama Toko: {store.name}</p>
-            <p>Lokasi: {store.location}</p>
-            <p>Admin: {store.location}</p>
-            <p>Pinpoint: {store.location}</p>
-            {/* Tambahkan data lain yang ingin ditampilkan */}
+            <CardDescription>ID Toko: {store.id}</CardDescription>
+            <CardDescription>Nama Toko: {store.name}</CardDescription>
+            <ul>
+              {store.location.map((location: any, index: number) => ( // Menggunakan map untuk melakukan iterasi
+                <li key={index}>
+                  Latitude: {location.latitude}, Longitude: {location.longitude} {/* Menampilkan latitude dan longitude */}
+                </li>
+              ))}
+            </ul>
             <AlertDialog>
               <AlertDialogTrigger asChild>
                 <Button variant="outline">Atur Toko</Button>
@@ -71,6 +100,11 @@ const StoreId = () => {
                 </AlertDialogFooter>
               </AlertDialogContent>
             </AlertDialog>
+            <CreateStorePoint
+              sessionCookie={sessionCookie || ''}
+              onSuccess={onSuccess}
+              onCancel={handleCancelCreatePoint}
+            />
           </div>
         ) : (
           <p>Loading...</p>
@@ -78,6 +112,6 @@ const StoreId = () => {
       </Card>
     </div>
   );
-};
+}
 
 export default StoreId;
